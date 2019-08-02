@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/mobile_navigation"
+            app:startDestination="@id/browseFragment">
+
+    <fragment android:id="@+id/browseFragment"
+              android:name="com.example.myapplication.ui.itunes.browse.BrowseFragment"
+              android:label="browse_fragment"
+              tools:layout="@layout/browse_fragment">
+        <action android:id="@+id/actionDetail1"
+                app:destination="@id/descriptionFragment"/>
+    </fragment>
+    <fragment android:id="@+id/favoriteFragment"
+              android:name="com.example.myapplication.ui.itunes.favorite.FavoriteFragment"
+              android:label="favorite_fragment" tools:layout="@layout/favorite_fragment">
+        <action android:id="@+id/actionDetail"
+                app:destination="@id/descriptionFragment"/>
+    </fragment>
+    <fragment android:id="@+id/descriptionFragment"
+              android:name="com.example.myapplication.ui.itunes.description.DescriptionFragment"
+              android:label="description_fragment" tools:layout="@layout/description_fragment">
+        <argument android:name="title" app:argType="string"/>
+    </fragment>
+</navigation>

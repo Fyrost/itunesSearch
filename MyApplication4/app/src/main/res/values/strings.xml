@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="title_browse">Browse</string>
+    <string name="title_favorite">Favorite</string>
+</resources>
