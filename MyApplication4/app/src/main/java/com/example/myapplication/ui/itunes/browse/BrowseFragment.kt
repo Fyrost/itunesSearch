@@ -63,8 +63,11 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
 //            true
 //        }
 
+
         viewModel.term.observe(this@BrowseFragment, Observer {
-            timer?.cancel()
+            if(timer != null){
+                timer!!.cancel()
+            }
 
             timer = Timer()
             timer!!.schedule(300L) {
