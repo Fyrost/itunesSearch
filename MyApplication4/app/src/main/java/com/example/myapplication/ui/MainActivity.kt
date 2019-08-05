@@ -26,23 +26,11 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         setContentView(R.layout.activity_main)
 
         vModel = ViewModelProviders.of(this)[SearchViewModel::class.java]
-
         setSupportActionBar(toolbar)
         navController = Navigation.findNavController(this@MainActivity, R.id.nav_host_fragment)
         bottom_nav.setupWithNavController(navController)
         NavigationUI.setupActionBarWithNavController(this@MainActivity, navController)
 
-        editText_search.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                vModel.term = editText_search.text.toString()
-            }
-        })
     }
 
     override fun onSupportNavigateUp(): Boolean {

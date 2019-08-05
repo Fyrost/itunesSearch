@@ -2,15 +2,18 @@ package com.example.myapplication.ui.itunes.browse
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.myapplication.R
 import com.example.myapplication.data.db.entity.ITunesResult
+import com.example.myapplication.databinding.BrowseFragmentBinding
 import com.example.myapplication.ui.base.ScopeFragment
 import com.example.myapplication.ui.itunes.SearchViewModel
 import com.xwray.groupie.GroupAdapter
@@ -25,30 +28,31 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
     override val kodein by closestKodein()
     private val viewModelFactory: BrowseViewModelFactory by instance()
 
-    private lateinit var vModel: SearchViewModel
     private lateinit var viewModel: BrowseViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.browse_fragment, container, false)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(BrowseViewModel::class.java)
+        val binding  = DataBindingUtil.inflate<BrowseFragmentBinding>(inflater,R.layout.browse_fragment,container,false)
+            .apply {
+                this.lifecycleOwner = this@BrowseFragment
+                this.viewmodel = viewModel
+            }
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        vModel = activity?.run {
-            ViewModelProviders.of(this)[SearchViewModel::class.java]
-        } ?: throw Exception("Invalid Activity")
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(BrowseViewModel::class.java)
 
-        button.setOnClickListener {
-            viewModel.term = vModel.term
-            println(viewModel.term)
-            bindUI()
-        }
+        viewModel.term.observe( this@BrowseFragment, Observer{
+            Log.d("testingPurpose",it)
+        })
 
     }
 
