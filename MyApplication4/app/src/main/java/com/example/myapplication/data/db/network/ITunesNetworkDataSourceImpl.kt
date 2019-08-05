@@ -7,19 +7,27 @@ import com.example.myapplication.data.ITunesApiService
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.data.db.network.response.ITunesResponse
 import com.example.myapplication.internal.NoConnectivityException
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ITunesNetworkDataSourceImpl(
     private val iTunesApiService: ITunesApiService
 ) : ITunesNetworkDataSource {
 
-    private val _downloadedITunesResult = MutableLiveData<List<ITunesResult>>()
-    override val downloadedITunesResult: LiveData<List<ITunesResult>>
-        get() = _downloadedITunesResult
+    override val downloadedITunesResult: MutableLiveData<List<ITunesResult>> = MutableLiveData()
 
-    override suspend fun fetchResults(term: String, media: String) {
+    override fun fetchResults(term: String, media: String) {
         try {
-            val fetchedResults = iTunesApiService.getResults(term, media).await()
-            _downloadedITunesResult.postValue(fetchedResults.iTunesResult)
+            val call = iTunesApiService.getResults(term, media)
+            call.enqueue(object: Callback<ITunesResponse> {
+                override fun onFailure(call: Call<ITunesResponse>, t: Throwable) {
+                    Log.e("Connectivity", "No Internet Connection")
+                }
+                override fun onResponse(call: Call<ITunesResponse>, response: Response<ITunesResponse>) {
+                    downloadedITunesResult.postValue(response.body()!!.iTunesResult)
+                }
+            })
         } catch (e: NoConnectivityException) {
             Log.e("Connectivity", "No Internet Connection")
         }

@@ -3,11 +3,12 @@ package com.example.myapplication.ui.itunes.browse
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.databinding.PropertyChangeRegistry
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.data.repository.ITunesRepository
-import com.example.myapplication.internal.lazyDeferred
 
 class BrowseViewModel(
     private val iTunesRepository: ITunesRepository
@@ -19,14 +20,17 @@ class BrowseViewModel(
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback) {
         callbacks.remove(callback)
     }
+
     @Bindable
     var term = MutableLiveData<String>()
 
     val media: String
         get() = "music"
 
-    val result by lazyDeferred {
-        iTunesRepository.getResults(term.value.toString(), media)
+    var result: LiveData<List<ITunesResult>> = iTunesRepository.getResults(term.value.toString(), media)
+
+    fun fetchResult() {
+        result = iTunesRepository.getResults(term.value.toString(), media)
     }
 
     fun removeNull(iTunesResult: List<ITunesResult>): List<ITunesResult> {

@@ -1,12 +1,12 @@
 package com.example.myapplication.data.db.network
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.data.db.entity.ITunesResult
 
 interface ITunesNetworkDataSource {
-    val downloadedITunesResult: LiveData<List<ITunesResult>>
+    val downloadedITunesResult: MutableLiveData<List<ITunesResult>>
 
-    suspend fun fetchResults(
+    fun fetchResults(
         term: String,
         media: String
     )
