@@ -1,13 +1,10 @@
 package com.example.myapplication.ui.itunes.browse
 
-import android.app.TaskStackBuilder
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -23,6 +20,8 @@ import kotlinx.android.synthetic.main.browse_fragment.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
+import java.util.*
+import kotlin.concurrent.schedule
 
 class BrowseFragment : ScopeFragment(), KodeinAware {
     override val kodein by closestKodein()
@@ -31,6 +30,7 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
     private var filteredITunesResult: List<ITunesResult> = listOf()
 
     private lateinit var viewModel: BrowseViewModel
+    private var timer: Timer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,13 +55,22 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
     }
 
     private fun bindUI() {
-        editText_search.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
+//        editText_search.setOnEditorActionListener { _, actionId, _ ->
+//            if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                viewModel.fetchResult()
+//                false
+//            }
+//            true
+//        }
+
+        viewModel.term.observe(this@BrowseFragment, Observer {
+            timer?.cancel()
+
+            timer = Timer()
+            timer!!.schedule(300L) {
                 viewModel.fetchResult()
-                false
             }
-            true
-        }
+        })
 
         initRecyclerView(filteredITunesResult.toBrowseItems())
         viewModel.fetchResult()
