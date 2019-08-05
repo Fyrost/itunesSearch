@@ -23,13 +23,16 @@ import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
+import java.util.*
+import kotlin.concurrent.schedule
 
 class BrowseFragment : ScopeFragment(), KodeinAware {
     override val kodein by closestKodein()
     private val viewModelFactory: BrowseViewModelFactory by instance()
 
     private lateinit var viewModel: BrowseViewModel
-
+    private var timer: Timer? = null
+    
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,7 +54,13 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
             .get(BrowseViewModel::class.java)
 
         viewModel.term.observe( this@BrowseFragment, Observer{
-            Log.d("testingPurpose",it)
+
+            timer?.cancel()
+
+            timer = Timer()
+            timer!!.schedule(300L) {
+                Log.d("testingPurpose",it)
+            }
         })
 
     }
