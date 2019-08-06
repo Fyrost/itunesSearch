@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.itunes.browse
 
+import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.databinding.PropertyChangeRegistry
@@ -24,13 +25,17 @@ class BrowseViewModel(
     @Bindable
     var term = MutableLiveData<String>()
 
-    val media: String
-        get() = "music"
+    private var media: String = "music"
 
     var result: LiveData<List<ITunesResult>> = iTunesRepository.getResults(term.value.toString(), media)
 
     fun fetchResult() {
         result = iTunesRepository.getResults(term.value.toString(), media)
+    }
+
+    fun onclick(v: View) {
+        media = v.tag.toString()
+        fetchResult()
     }
 
     fun removeNull(iTunesResult: List<ITunesResult>): List<ITunesResult> {

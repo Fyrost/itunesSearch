@@ -14,7 +14,7 @@ import android.view.animation.OvershootInterpolator
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 
 import com.example.myapplication.R
 import com.example.myapplication.data.db.entity.ITunesResult
@@ -28,6 +28,7 @@ import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 import java.util.*
 import kotlin.concurrent.schedule
+
 
 class BrowseFragment : ScopeFragment(), KodeinAware {
     override val kodein by closestKodein()
@@ -44,7 +45,7 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
     ): View? {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(BrowseViewModel::class.java)
-        val binding  = DataBindingUtil.inflate<BrowseFragmentBinding>(inflater,R.layout.browse_fragment,container,false)
+        val binding  = DataBindingUtil.inflate<BrowseFragmentBinding>(inflater, R.layout.browse_fragment,container,false)
             .apply {
                 this.lifecycleOwner = this@BrowseFragment
                 this.viewmodel = viewModel
@@ -52,22 +53,19 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(BrowseViewModel::class.java)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         bindUI()
         fabFilterAnimation()
     }
 
     private fun bindUI() {
-
         viewModel.term.observe(this@BrowseFragment, Observer {
-            if(timer != null){
+            if (it.isNullOrBlank()) return@Observer
+            if(timer != null) {
                 timer!!.cancel()
             }
-
             timer = Timer()
             timer!!.schedule(300L) {
                 viewModel.fetchResult()
@@ -75,7 +73,6 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
         })
 
         initRecyclerView(filteredITunesResult.toBrowseItems())
-        viewModel.fetchResult()
         viewModel.result.observe(this@BrowseFragment, Observer { iTunesResult ->
             if (iTunesResult == null)return@Observer
             group_loading.visibility = View.GONE
@@ -90,13 +87,14 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
         }
 
         browse_recyclerView.apply {
-            layoutManager = LinearLayoutManager(this@BrowseFragment.context)
+
+            layoutManager = GridLayoutManager(this@BrowseFragment.context, 3)
             adapter = groupAdapter
         }
 
         groupAdapter.setOnItemClickListener{ item, view ->
             (item as? BrowseItem)?.let {
-                showResultDetail(it.iTunesResult.trackName, view)
+                showResultDetail(it.iTunesResult, view)
             }
         }
     }
@@ -105,8 +103,8 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
         groupAdapter.update(items)
     }
 
-    private fun showResultDetail(title: String?, view: View) {
-        val actionDetail = BrowseFragmentDirections.actionDetail1(title!!)
+    private fun showResultDetail(iTunesResult: ITunesResult, view: View) {
+        val actionDetail = BrowseFragmentDirections.actionDetail1(iTunesResult)
         Navigation.findNavController(view).navigate(actionDetail)
     }
 
