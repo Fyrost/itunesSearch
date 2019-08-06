@@ -100,6 +100,6 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-alpha02'
     implementation 'androidx.fragment:fragment-ktx:1.0.0'
 
-    // FAB
+    // Floating Action Button
     implementation 'com.github.clans:fab:1.6.4'
 }

@@ -1,10 +1,16 @@
 package com.example.myapplication.ui.itunes.browse
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.OvershootInterpolator
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -51,6 +57,7 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
         super.onViewCreated(view, savedInstanceState)
 
         bindUI()
+        fabFilterAnimation()
     }
 
     private fun bindUI() {
@@ -105,5 +112,34 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
         return this.map {
             BrowseItem(it)
         }
+    }
+
+    private fun fabFilterAnimation() {
+        val set = AnimatorSet()
+
+        val scaleOutX: ObjectAnimator = ObjectAnimator.ofFloat(fab_filter_menu.menuIconView,"ScaleX", 1.0f, 0.2f)
+        val scaleOutY: ObjectAnimator = ObjectAnimator.ofFloat(fab_filter_menu.menuIconView,"ScaleY", 1.0f, 0.2f)
+
+        val scaleInX: ObjectAnimator = ObjectAnimator.ofFloat(fab_filter_menu.menuIconView,"ScaleX", 0.2f, 1.0f)
+        val scaleInY: ObjectAnimator = ObjectAnimator.ofFloat(fab_filter_menu.menuIconView,"ScaleY", 0.2f, 1.0f)
+
+        scaleOutX.duration = 50
+        scaleOutY.duration = 50
+
+        scaleInX.duration = 150
+        scaleInY.duration = 150
+
+        scaleInX.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationStart(animation: Animator?) {
+                fab_filter_menu.menuIconView.setImageResource(if (!fab_filter_menu.isOpened) R.drawable.ic_fab_filter_close else R.drawable.ic_fab_filter_list)
+            }
+        })
+
+        set.play(scaleOutX).with(scaleOutY)
+        set.play(scaleInX).with(scaleInY).after(scaleOutX)
+        set.interpolator = OvershootInterpolator(2F)
+
+        fab_filter_menu.iconToggleAnimatorSet = set
+        fab_filter_menu.setClosedOnTouchOutside(true)
     }
 }
