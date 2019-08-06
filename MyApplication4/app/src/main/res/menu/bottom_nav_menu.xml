@@ -3,11 +3,11 @@
 
     <item
             android:id="@+id/browseFragment"
-            android:icon="@drawable/ic_home_black_24dp"
+            android:icon="@drawable/ic_tab_browse"
             android:title="@string/title_browse"/>
 
     <item
             android:id="@+id/favoriteFragment"
-            android:icon="@drawable/ic_dashboard_black_24dp"
+            android:icon="@drawable/ic_tab_favorite"
             android:title="@string/title_favorite"/>
 </menu>
