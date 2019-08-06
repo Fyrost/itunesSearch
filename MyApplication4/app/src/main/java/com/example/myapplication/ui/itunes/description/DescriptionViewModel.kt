@@ -9,7 +9,6 @@ class DescriptionViewModel(
     private val databaseRepository: DatabaseRepository
 ) : ViewModel() {
 
-    val allResults: LiveData<List<ITunesResult>> = databaseRepository.getAllResults()
 
     fun insertResult(iTunesResult: ITunesResult) {
         databaseRepository.insertResult(iTunesResult)

@@ -105,7 +105,7 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_home_black_24dp"
                         fab:fab_size="mini"
-                        android:tag="music"
+                        android:tag="song"
                         android:onClick="@{viewmodel.onclick}"
                         fab:fab_label="Music" />
 
@@ -115,7 +115,7 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_home_black_24dp"
                         fab:fab_size="mini"
-                        android:tag="movie"
+                        android:tag="feature-movie"
                         android:onClick="@{viewmodel.onclick}"
                         fab:fab_label="Movie" />
 

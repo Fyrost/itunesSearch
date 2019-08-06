@@ -21,28 +21,27 @@ class FavoriteViewModel(
         callbacks.remove(callback)
     }
 
+    init {
+        databaseRepository.getAll()
+    }
+
     @Bindable
     var term = MutableLiveData<String>()
 
-    var media: String = "music"
+    var media: String = "movie"
 
-    var result: LiveData<List<ITunesResult>> = databaseRepository.getResults(term.value.toString(), media)
+    var result: LiveData<List<ITunesResult>> = databaseRepository.results
 
     fun fetchFavorites() {
-        result = databaseRepository.getResults(term.value.toString(), media)
-    }
-
-    fun removeNull(iTunesResult: List<ITunesResult>): List<ITunesResult> {
-        var tempResult: MutableList<ITunesResult> = mutableListOf()
-        for (row in iTunesResult) {
-            if (!row.trackName.isNullOrBlank() || row.trackId != 0) {
-                tempResult.add(row)
-            }
+        if (term.value.isNullOrBlank()) {
+            databaseRepository.getMediaResult(media)
+        } else {
+            databaseRepository.getMediaTermResult(term.value.toString(), media)
         }
-        return tempResult.toList()
     }
 
     fun onclick(v: View) {
         media = v.tag.toString()
+        fetchFavorites()
     }
 }

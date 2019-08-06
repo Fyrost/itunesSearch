@@ -14,8 +14,11 @@ interface ITunesResultDao {
     fun insert(resultList: ITunesResult)
 
     @Query("SELECT * FROM itunes_result WHERE trackName LIKE :term AND kind = :media")
-    fun getResults(term: String, media: String): LiveData<List<ITunesResult>>
+    fun getMediaTermResult(term: String, media: String): List<ITunesResult>
+
+    @Query("SELECT * FROM itunes_result WHERE kind = :media")
+    fun getMediaResult(media: String): List<ITunesResult>
 
     @Query("SELECT * FROM itunes_result")
-    fun getAll(): LiveData<List<ITunesResult>>
+    fun getAll(): List<ITunesResult>
 }

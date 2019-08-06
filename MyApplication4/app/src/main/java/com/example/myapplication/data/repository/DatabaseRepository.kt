@@ -4,7 +4,10 @@ import androidx.lifecycle.LiveData
 import com.example.myapplication.data.db.entity.ITunesResult
 
 interface DatabaseRepository {
+    val results: LiveData<List<ITunesResult>>
+
+    fun getAll()
     fun insertResult(iTunesResult: ITunesResult)
-    fun getAllResults(): LiveData<List<ITunesResult>>
-    fun getResults(term: String, media: String): LiveData<List<ITunesResult>>
+    fun getMediaTermResult(term: String, media: String)
+    fun getMediaResult(media: String)
 }

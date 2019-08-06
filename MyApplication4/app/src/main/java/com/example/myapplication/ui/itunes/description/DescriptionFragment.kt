@@ -45,10 +45,6 @@ class DescriptionFragment : Fragment(), KodeinAware {
         fab.setOnClickListener {
             viewModel.insertResult(iTunesResult)
         }
-
-        viewModel.allResults.observe(this@DescriptionFragment, Observer {
-            println(it)
-        })
     }
 
 }

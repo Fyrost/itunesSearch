@@ -49,7 +49,7 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(BrowseViewModel::class.java)
+
         bindUI()
     }
 

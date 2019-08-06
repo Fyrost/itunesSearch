@@ -55,7 +55,6 @@ class FavoriteFragment : Fragment(), KodeinAware {
 
     private fun bindUI() {
         viewModel.term.observe(this, Observer {
-            println(it)
             if (it.isNullOrBlank()) return@Observer
             if(timer != null) {
                 timer!!.cancel()
@@ -68,8 +67,10 @@ class FavoriteFragment : Fragment(), KodeinAware {
 
         viewModel.result.observe(this, Observer { iTunesResult ->
             if (iTunesResult == null)return@Observer
+            println(iTunesResult)
             group_loading1.visibility = View.GONE
-            filteredITunesResult = viewModel.removeNull(iTunesResult)
+            filteredITunesResult = iTunesResult
+            updateItems(filteredITunesResult.toFavoriteItem())
         })
 
         initRecyclerView(filteredITunesResult.toFavoriteItem())
@@ -95,6 +96,10 @@ class FavoriteFragment : Fragment(), KodeinAware {
     private fun showResultDetail(iTunesResult: ITunesResult, view: View) {
         val actionDetail = FavoriteFragmentDirections.actionDetail(iTunesResult)
         Navigation.findNavController(view).navigate(actionDetail)
+    }
+
+    private fun updateItems(items: List<FavoriteItem>) {
+        groupAdapter.update(items)
     }
 
     private fun List<ITunesResult>.toFavoriteItem(): List<FavoriteItem> {
