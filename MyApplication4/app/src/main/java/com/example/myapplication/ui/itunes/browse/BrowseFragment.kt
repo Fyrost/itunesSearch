@@ -23,6 +23,7 @@ import org.kodein.di.generic.instance
 import java.util.*
 import kotlin.concurrent.schedule
 
+
 class BrowseFragment : ScopeFragment(), KodeinAware {
     override val kodein by closestKodein()
     private val viewModelFactory: BrowseViewModelFactory by instance()
@@ -38,7 +39,7 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
     ): View? {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(BrowseViewModel::class.java)
-        val binding  = DataBindingUtil.inflate<BrowseFragmentBinding>(inflater,R.layout.browse_fragment,container,false)
+        val binding  = DataBindingUtil.inflate<BrowseFragmentBinding>(inflater, R.layout.browse_fragment,container,false)
             .apply {
                 this.lifecycleOwner = this@BrowseFragment
                 this.viewmodel = viewModel
@@ -55,15 +56,6 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
     }
 
     private fun bindUI() {
-//        editText_search.setOnEditorActionListener { _, actionId, _ ->
-//            if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                viewModel.fetchResult()
-//                false
-//            }
-//            true
-//        }
-
-
         viewModel.term.observe(this@BrowseFragment, Observer {
             if(timer != null){
                 timer!!.cancel()
