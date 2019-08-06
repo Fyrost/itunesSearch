@@ -11,8 +11,11 @@ import com.example.myapplication.data.db.entity.ITunesResult
 interface ITunesResultDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun upsert(resultList: ITunesResult)
+    fun insert(resultList: ITunesResult)
 
     @Query("SELECT * FROM itunes_result WHERE trackName LIKE :term AND kind = :media")
-    fun getResults(term: String, media: String): LiveData<ITunesResult>
+    fun getResults(term: String, media: String): LiveData<List<ITunesResult>>
+
+    @Query("SELECT * FROM itunes_result")
+    fun getAll(): LiveData<List<ITunesResult>>
 }

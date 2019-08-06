@@ -13,13 +13,16 @@
     </fragment>
     <fragment android:id="@+id/favoriteFragment"
               android:name="com.example.myapplication.ui.itunes.favorite.FavoriteFragment"
-              android:label="favorite_fragment" tools:layout="@layout/favorite_fragment">
+              android:label="favorite_fragment"
+              tools:layout="@layout/favorite_fragment">
         <action android:id="@+id/actionDetail"
                 app:destination="@id/descriptionFragment"/>
     </fragment>
     <fragment android:id="@+id/descriptionFragment"
               android:name="com.example.myapplication.ui.itunes.description.DescriptionFragment"
-              android:label="description_fragment" tools:layout="@layout/description_fragment">
-        <argument android:name="title" app:argType="string"/>
+              android:label="description_fragment"
+              tools:layout="@layout/description_fragment">
+        <argument android:name="iTunesResult"
+                  app:argType="com.example.myapplication.data.db.entity.ITunesResult"/>
     </fragment>
 </navigation>

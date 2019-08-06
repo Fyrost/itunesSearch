@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.myapplication.R
 import com.example.myapplication.data.db.entity.ITunesResult
@@ -88,7 +87,7 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
 
         groupAdapter.setOnItemClickListener{ item, view ->
             (item as? BrowseItem)?.let {
-                showResultDetail(it.iTunesResult.trackName, view)
+                showResultDetail(it.iTunesResult, view)
             }
         }
     }
@@ -97,8 +96,8 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
         groupAdapter.update(items)
     }
 
-    private fun showResultDetail(title: String?, view: View) {
-        val actionDetail = BrowseFragmentDirections.actionDetail1(title!!)
+    private fun showResultDetail(iTunesResult: ITunesResult, view: View) {
+        val actionDetail = BrowseFragmentDirections.actionDetail1(iTunesResult)
         Navigation.findNavController(view).navigate(actionDetail)
     }
 
