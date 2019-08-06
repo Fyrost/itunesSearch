@@ -13,6 +13,8 @@ class BrowseItem(
         if (!iTunesResult.trackName.isNullOrBlank()) {
             viewHolder.apply {
                 textView_title.text = iTunesResult.trackName
+                textView_genre.text = iTunesResult.primaryGenreName
+                textView_price.text = iTunesResult.trackPrice.toString()
             }
         }
     }
