@@ -10,7 +10,6 @@ class ITunesRepositoryImpl(
 
     override fun getResults(term: String, media: String): LiveData<List<ITunesResult>> {
         iTunesNetworkDataSource.fetchResults(term, media)
-        println(term)
         return iTunesNetworkDataSource.downloadedITunesResult
     }
 }

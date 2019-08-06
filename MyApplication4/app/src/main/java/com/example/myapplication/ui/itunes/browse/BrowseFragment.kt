@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.myapplication.R
@@ -47,20 +48,18 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(BrowseViewModel::class.java)
-
         bindUI()
     }
 
     private fun bindUI() {
         viewModel.term.observe(this@BrowseFragment, Observer {
-            if(timer != null){
+            if (it.isNullOrBlank()) return@Observer
+            if(timer != null) {
                 timer!!.cancel()
             }
-
             timer = Timer()
             timer!!.schedule(300L) {
                 viewModel.fetchResult()
@@ -68,7 +67,6 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
         })
 
         initRecyclerView(filteredITunesResult.toBrowseItems())
-        viewModel.fetchResult()
         viewModel.result.observe(this@BrowseFragment, Observer { iTunesResult ->
             if (iTunesResult == null)return@Observer
             group_loading.visibility = View.GONE
@@ -83,7 +81,8 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
         }
 
         browse_recyclerView.apply {
-            layoutManager = LinearLayoutManager(this@BrowseFragment.context)
+
+            layoutManager = GridLayoutManager(this@BrowseFragment.context, 3)
             adapter = groupAdapter
         }
 
