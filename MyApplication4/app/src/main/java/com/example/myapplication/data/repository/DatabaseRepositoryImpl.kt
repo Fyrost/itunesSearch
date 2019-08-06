@@ -37,7 +37,7 @@ class DatabaseRepositoryImpl(
 
     override fun getMediaTermResult(term: String, media: String) {
         GlobalScope.launch(Dispatchers.IO) {
-            _results.postValue(iTunesResultDao.getMediaTermResult(term, media))
+            _results.postValue(iTunesResultDao.getMediaTermResult("%$term%", media))
         }
     }
 }
