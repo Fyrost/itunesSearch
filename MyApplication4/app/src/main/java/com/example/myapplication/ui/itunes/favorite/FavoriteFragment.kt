@@ -79,6 +79,9 @@ class FavoriteFragment : Fragment(), KodeinAware {
             group_loading1.visibility = View.GONE
             filteredITunesResult = iTunesResult
             updateItems(filteredITunesResult.toFavoriteItem())
+            if (fab_filter_menu_favorite.isOpened) {
+                fab_filter_menu_favorite.toggle(false)
+            }
         })
 
         initRecyclerView(filteredITunesResult.toFavoriteItem())
