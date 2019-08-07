@@ -9,118 +9,139 @@
                 name="viewmodel"
                 type="com.example.myapplication.ui.itunes.favorite.FavoriteViewModel"/>
     </data>
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:context=".ui.itunes.favorite.FavoriteFragment">
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:theme="@style/AppTheme"
-                android:background="?colorPrimary"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
+                                                         android:layout_height="match_parent"
+                                                         tools:context=".ui.itunes.favorite.FavoriteFragment">
+        <com.github.clans.fab.FloatingActionMenu
+                android:id="@+id/fab_filter_menu"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="15dp">
-            <EditText
-                    android:hint="Search"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="12dp"
-                    android:textSize="19sp"
-                    android:inputType="textPersonName"
-                    android:ems="10"
-                    android:text="@={viewmodel.term}"
-                    android:id="@+id/editText_search1" android:layout_marginStart="24dp"
-                    android:paddingEnd="12dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginEnd="24dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_height="match_parent"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                app:menu_icon="@drawable/ic_fab_filter_list"
+                app:menu_labels_ellipsize="end"
+                app:menu_labels_singleLine="true"
+                app:menu_backgroundColor="#ccffffff">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+            <com.github.clans.fab.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_fab_music"
+                    app:fab_size="mini"
+                    android:tag="music"
+                    android:onClick="@{viewmodel.onclick}"
+                    fab:fab_label="Music"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_fab_music_video"
+                    app:fab_size="mini"
+                    android:tag="musicVideo"
+                    android:onClick="@{viewmodel.onclick}"
+                    app:fab_label="Music Video"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_fab_movie"
+                    app:fab_size="mini"
+                    android:tag="movie"
+                    android:onClick="@{viewmodel.onclick}"
+                    app:fab_label="Movie"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/fab2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_fab_tv"
+                    fab:fab_size="mini"
+                    android:tag="tvShow"
+                    android:onClick="@{viewmodel.onclick}"
+                    fab:fab_label="TV Show"/>
+
+        </com.github.clans.fab.FloatingActionMenu>
+        <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <androidx.constraintlayout.widget.Group
-                    android:id="@+id/group_loading1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    app:constraint_referenced_ids="progressBar_loading1, textView_loading1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            <ProgressBar
-                    android:id="@+id/progressBar_loading1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:indeterminate="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                    android:id="@+id/textView_loading1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="Loading"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/progressBar_loading"
-                    app:layout_constraintVertical_bias="0.0" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/favorite_recyclerView"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+            <FrameLayout
+                    android:theme="@style/AppTheme"
+                    android:background="?colorPrimary"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" tools:layout_editor_absoluteY="557dp"
-                    tools:layout_editor_absoluteX="0dp"/>
+                    android:layout_height="wrap_content"
+                    android:padding="15dp">
+                <EditText
+                        android:hint="Search"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="12dp"
+                        android:textSize="19sp"
+                        android:inputType="textPersonName"
+                        android:ems="10"
+                        android:text="@={viewmodel.term}"
+                        android:id="@+id/editText_search1" android:layout_marginStart="24dp"
+                        android:paddingEnd="12dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginEnd="24dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+            </FrameLayout>
 
-            <com.github.clans.fab.FloatingActionMenu
-                    android:id="@+id/menu_labels_right1"
+            <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentBottom="true"
-                    android:paddingRight="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="10dp"
-                    fab:menu_labels_ellipsize="end"
-                    fab:menu_labels_singleLine="true"
-                    fab:menu_backgroundColor="#ccffffff"
-                    fab:menu_labels_position="right">
+                    android:layout_height="match_parent">
 
-                <com.github.clans.fab.FloatingActionButton
-                        android:id="@+id/fab4"
+                <androidx.constraintlayout.widget.Group
+                        android:id="@+id/group_loading1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_black_24dp"
-                        fab:fab_size="mini"
-                        android:tag="song"
-                        android:onClick="@{viewmodel.onclick}"
-                        fab:fab_label="Music" />
+                        android:layout_marginEnd="8dp"
+                        app:constraint_referenced_ids="progressBar_loading1, textView_loading1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <com.github.clans.fab.FloatingActionButton
-                        android:id="@+id/fab5"
+                <ProgressBar
+                        android:id="@+id/progressBar_loading1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_black_24dp"
-                        fab:fab_size="mini"
-                        android:tag="feature-movie"
-                        android:onClick="@{viewmodel.onclick}"
-                        fab:fab_label="Movie" />
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:indeterminate="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            </com.github.clans.fab.FloatingActionMenu>
+                <TextView
+                        android:id="@+id/textView_loading1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="Loading"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/progressBar_loading1"
+                        app:layout_constraintVertical_bias="0.0" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/favorite_recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" tools:layout_editor_absoluteY="557dp"
+                        tools:layout_editor_absoluteX="0dp"/>
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
