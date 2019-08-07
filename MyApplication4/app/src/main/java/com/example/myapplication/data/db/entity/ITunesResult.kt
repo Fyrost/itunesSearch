@@ -10,12 +10,14 @@ import kotlinx.android.parcel.Parcelize
 data class ITunesResult(
     @PrimaryKey(autoGenerate = false)
     val trackId: Int,
-    val artistName: String?,
+    val trackName: String?,
     val artworkUrl100: String?,
     val kind: String?,
-    val longDescription: String?,
+    val primaryGenreName: String?,
     val releaseDate: String?,
-    val trackName: String?,
     val trackPrice: Double?,
-    val primaryGenreName: String?
+    val artistName: String?,
+    val longDescription: String?,
+    val collectionName: String?,
+    val collectionPrice: Double?
 ): Parcelable
