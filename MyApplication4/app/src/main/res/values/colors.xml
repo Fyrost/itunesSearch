@@ -10,4 +10,6 @@
 
     <color name="colorText">#FFFFFF</color>
     <color name="colorOffset">#f7f5eb</color>
+
+    <color name="transparentPrimaryLight">#80ea5a6e</color>
 </resources>
