@@ -88,7 +88,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
         <com.github.clans.fab.FloatingActionMenu
-                android:id="@+id/fab_filter_menu"
+                android:id="@+id/fab_filter_menu_browse"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingRight="10dp"
@@ -105,7 +105,7 @@
                     android:src="@drawable/ic_fab_music"
                     app:fab_size="mini"
                     android:tag="music"
-                    android:onClick="@{viewmodel.onclick}"
+                    android:onClick="@{viewmodel::onclick}"
                     fab:fab_label="Music" />
 
             <com.github.clans.fab.FloatingActionButton
@@ -114,7 +114,7 @@
                     android:src="@drawable/ic_fab_music_video"
                     app:fab_size="mini"
                     android:tag="musicVideo"
-                    android:onClick="@{viewmodel.onclick}"
+                    android:onClick="@{viewmodel::onclick}"
                     app:fab_label="Music Video" />
 
             <com.github.clans.fab.FloatingActionButton
@@ -123,7 +123,7 @@
                     android:src="@drawable/ic_fab_movie"
                     app:fab_size="mini"
                     android:tag="movie"
-                    android:onClick="@{viewmodel.onclick}"
+                    android:onClick="@{viewmodel::onclick}"
                     app:fab_label="Movie" />
 
             <com.github.clans.fab.FloatingActionButton
@@ -133,7 +133,7 @@
                     android:src="@drawable/ic_fab_tv"
                     fab:fab_size="mini"
                     android:tag="tvShow"
-                    android:onClick="@{viewmodel.onclick}"
+                    android:onClick="@{viewmodel::onclick}"
                     fab:fab_label="TV Show" />
 
         </com.github.clans.fab.FloatingActionMenu>
