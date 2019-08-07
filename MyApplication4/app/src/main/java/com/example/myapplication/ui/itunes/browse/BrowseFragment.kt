@@ -20,6 +20,8 @@ import com.example.myapplication.R
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.databinding.BrowseFragmentBinding
 import com.example.myapplication.ui.base.ScopeFragment
+import com.example.myapplication.ui.utils.fabFilterAnimation
+import com.example.myapplication.ui.utils.toBrowseItems
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.browse_fragment.*
@@ -57,7 +59,6 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
         super.onViewCreated(view, savedInstanceState)
 
         bindUI()
-        fabFilterAnimation()
     }
 
     private fun bindUI() {
@@ -79,6 +80,8 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
             filteredITunesResult = viewModel.removeNull(iTunesResult)
             updateItems(filteredITunesResult.toBrowseItems())
         })
+
+        fabFilterAnimation(fab_filter_menu_browse)
     }
 
     private fun initRecyclerView(items: List<BrowseItem>) {
@@ -94,7 +97,7 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
 
         groupAdapter.setOnItemClickListener{ item, view ->
             (item as? BrowseItem)?.let {
-                showResultDetail(it.iTunesResult, view)
+                navigateToDescription(it.iTunesResult, view)
             }
         }
     }
@@ -103,43 +106,8 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
         groupAdapter.update(items)
     }
 
-    private fun showResultDetail(iTunesResult: ITunesResult, view: View) {
+    private fun navigateToDescription(iTunesResult: ITunesResult, view: View) {
         val actionDetail = BrowseFragmentDirections.actionDetail1(iTunesResult)
         Navigation.findNavController(view).navigate(actionDetail)
-    }
-
-    private fun List<ITunesResult>.toBrowseItems(): List<BrowseItem> {
-        return this.map {
-            BrowseItem(it)
-        }
-    }
-
-    private fun fabFilterAnimation() {
-        val set = AnimatorSet()
-
-        val scaleOutX: ObjectAnimator = ObjectAnimator.ofFloat(fab_filter_menu.menuIconView,"ScaleX", 1.0f, 0.2f)
-        val scaleOutY: ObjectAnimator = ObjectAnimator.ofFloat(fab_filter_menu.menuIconView,"ScaleY", 1.0f, 0.2f)
-
-        val scaleInX: ObjectAnimator = ObjectAnimator.ofFloat(fab_filter_menu.menuIconView,"ScaleX", 0.2f, 1.0f)
-        val scaleInY: ObjectAnimator = ObjectAnimator.ofFloat(fab_filter_menu.menuIconView,"ScaleY", 0.2f, 1.0f)
-
-        scaleOutX.duration = 50
-        scaleOutY.duration = 50
-
-        scaleInX.duration = 150
-        scaleInY.duration = 150
-
-        scaleInX.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator?) {
-                fab_filter_menu.menuIconView.setImageResource(if (!fab_filter_menu.isOpened) R.drawable.ic_fab_filter_close else R.drawable.ic_fab_filter_list)
-            }
-        })
-
-        set.play(scaleOutX).with(scaleOutY)
-        set.play(scaleInX).with(scaleInY).after(scaleOutX)
-        set.interpolator = OvershootInterpolator(2F)
-
-        fab_filter_menu.iconToggleAnimatorSet = set
-        fab_filter_menu.setClosedOnTouchOutside(true)
     }
 }

@@ -1,11 +1,16 @@
 package com.example.myapplication.ui.itunes.favorite
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.OvershootInterpolator
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -14,6 +19,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.databinding.FavoriteFragmentBinding
+import com.example.myapplication.ui.utils.fabFilterAnimation
+import com.example.myapplication.ui.utils.toFavoriteItem
+import com.github.clans.fab.FloatingActionButton
+import com.github.clans.fab.FloatingActionMenu
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.browse_fragment.*
@@ -67,13 +76,13 @@ class FavoriteFragment : Fragment(), KodeinAware {
 
         viewModel.result.observe(this, Observer { iTunesResult ->
             if (iTunesResult == null)return@Observer
-            println(iTunesResult)
             group_loading1.visibility = View.GONE
             filteredITunesResult = iTunesResult
             updateItems(filteredITunesResult.toFavoriteItem())
         })
 
         initRecyclerView(filteredITunesResult.toFavoriteItem())
+        fabFilterAnimation(fab_filter_menu_favorite)
     }
 
     private fun initRecyclerView(items: List<FavoriteItem>) {
@@ -88,12 +97,12 @@ class FavoriteFragment : Fragment(), KodeinAware {
 
         groupAdapter.setOnItemClickListener{ item, view ->
             (item as? FavoriteItem)?.let {
-                showResultDetail(it.iTunesResult, view)
+                navigateToDescription(it.iTunesResult, view)
             }
         }
     }
 
-    private fun showResultDetail(iTunesResult: ITunesResult, view: View) {
+    private fun navigateToDescription(iTunesResult: ITunesResult, view: View) {
         val actionDetail = FavoriteFragmentDirections.actionDetail(iTunesResult)
         Navigation.findNavController(view).navigate(actionDetail)
     }
@@ -101,11 +110,4 @@ class FavoriteFragment : Fragment(), KodeinAware {
     private fun updateItems(items: List<FavoriteItem>) {
         groupAdapter.update(items)
     }
-
-    private fun List<ITunesResult>.toFavoriteItem(): List<FavoriteItem> {
-        return this.map {
-            FavoriteItem(it)
-        }
-    }
-
 }
