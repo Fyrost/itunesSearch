@@ -106,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_fab_music"
                     app:fab_size="mini"
-                    android:tag="music"
+                    android:tag="song"
                     android:onClick="@{viewmodel::onclick}"
                     fab:fab_label="Music"/>
 
@@ -115,7 +115,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_fab_music_video"
                     app:fab_size="mini"
-                    android:tag="musicVideo"
+                    android:tag="music-video"
                     android:onClick="@{viewmodel::onclick}"
                     app:fab_label="Music Video"/>
 
@@ -124,7 +124,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_fab_movie"
                     app:fab_size="mini"
-                    android:tag="movie"
+                    android:tag="feature-movie"
                     android:onClick="@{viewmodel::onclick}"
                     app:fab_label="Movie"/>
 
@@ -134,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_fab_tv"
                     fab:fab_size="mini"
-                    android:tag="tvShow"
+                    android:tag="tv-episode"
                     android:onClick="@{viewmodel::onclick}"
                     fab:fab_label="TV Show"/>
 
