@@ -1,16 +1,12 @@
 package com.example.myapplication.ui.itunes.browse
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import androidx.lifecycle.ViewModelProviders
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.OvershootInterpolator
+
+import androidx.lifecycle.ViewModelProviders
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -22,13 +18,17 @@ import com.example.myapplication.databinding.BrowseFragmentBinding
 import com.example.myapplication.ui.base.ScopeFragment
 import com.example.myapplication.ui.utils.fabFilterAnimation
 import com.example.myapplication.ui.utils.toBrowseItems
+
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.browse_fragment.*
+
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
+
 import java.util.*
+
 import kotlin.concurrent.schedule
 
 

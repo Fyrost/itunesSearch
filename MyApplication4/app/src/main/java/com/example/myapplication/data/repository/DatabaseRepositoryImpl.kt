@@ -1,17 +1,20 @@
 package com.example.myapplication.data.repository
 
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+
 import com.example.myapplication.data.db.ITunesResultDao
 import com.example.myapplication.data.db.entity.ITunesResult
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+
 class DatabaseRepositoryImpl(
     private val iTunesResultDao: ITunesResultDao
 ) : DatabaseRepository {
-
     private val _results = MutableLiveData<List<ITunesResult>>()
     override val results: LiveData<List<ITunesResult>>
         get() = _results

@@ -1,14 +1,19 @@
 package com.example.myapplication.ui.itunes.favorite
 
+
 import android.view.View
+
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.databinding.PropertyChangeRegistry
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModel
+
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.data.repository.DatabaseRepository
+
 
 class FavoriteViewModel(
     private val databaseRepository: DatabaseRepository
