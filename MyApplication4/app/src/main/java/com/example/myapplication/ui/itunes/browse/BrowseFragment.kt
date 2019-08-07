@@ -76,12 +76,12 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
         initRecyclerView(filteredITunesResult.toBrowseItems())
         viewModel.result.observe(this@BrowseFragment, Observer { iTunesResult ->
             if (iTunesResult == null)return@Observer
-            group_loading.visibility = View.GONE
             filteredITunesResult = viewModel.removeNull(iTunesResult)
             updateItems(filteredITunesResult.toBrowseItems())
             if (fab_filter_menu_browse.isOpened) {
                 fab_filter_menu_browse.toggle(false)
             }
+            viewModel.setNotInProgress()
         })
 
         fabFilterAnimation(fab_filter_menu_browse)
