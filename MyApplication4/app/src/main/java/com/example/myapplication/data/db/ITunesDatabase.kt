@@ -8,7 +8,8 @@ import com.example.myapplication.data.db.entity.ITunesResult
 
 @Database(
     entities = [ITunesResult::class],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 abstract class ITunesDatabase: RoomDatabase() {
     abstract fun iTunesResultDao(): ITunesResultDao
