@@ -79,6 +79,9 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
             group_loading.visibility = View.GONE
             filteredITunesResult = viewModel.removeNull(iTunesResult)
             updateItems(filteredITunesResult.toBrowseItems())
+            if (fab_filter_menu_browse.isOpened) {
+                fab_filter_menu_browse.toggle(false)
+            }
         })
 
         fabFilterAnimation(fab_filter_menu_browse)
