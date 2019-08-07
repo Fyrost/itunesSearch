@@ -26,18 +26,22 @@ class FavoriteViewModel(
         callbacks.remove(callback)
     }
 
-    init {
-        databaseRepository.getAll()
-    }
-
     @Bindable
     var term = MutableLiveData<String>()
+
+    @Bindable
+    var inProgress = MutableLiveData<Int>()
 
     var media: String = "movie"
 
     var result: LiveData<List<ITunesResult>> = databaseRepository.results
 
+    init {
+        databaseRepository.getAll()
+    }
+
     fun fetchFavorites() {
+        setInProgress()
         if (term.value.isNullOrBlank()) {
             databaseRepository.getMediaResult(media)
         } else {
@@ -48,5 +52,13 @@ class FavoriteViewModel(
     fun onclick(v: View) {
         media = v.tag.toString()
         fetchFavorites()
+    }
+
+    private fun setInProgress() {
+        inProgress.postValue(View.VISIBLE)
+    }
+
+    fun setNotInProgress() {
+        inProgress.postValue(View.GONE)
     }
 }
