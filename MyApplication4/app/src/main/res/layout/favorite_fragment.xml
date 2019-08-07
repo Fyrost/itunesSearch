@@ -12,56 +12,6 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
                                                          android:layout_height="match_parent"
                                                          tools:context=".ui.itunes.favorite.FavoriteFragment">
-        <com.github.clans.fab.FloatingActionMenu
-                android:id="@+id/fab_filter_menu_favorite"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingRight="10dp"
-                android:paddingBottom="10dp"
-                android:paddingLeft="10dp"
-                app:menu_icon="@drawable/ic_fab_filter_list"
-                app:menu_labels_ellipsize="end"
-                app:menu_labels_singleLine="true"
-                app:menu_backgroundColor="#ccffffff">
-
-            <com.github.clans.fab.FloatingActionButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_fab_music"
-                    app:fab_size="mini"
-                    android:tag="music"
-                    android:onClick="@{viewmodel::onclick}"
-                    fab:fab_label="Music"/>
-
-            <com.github.clans.fab.FloatingActionButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_fab_music_video"
-                    app:fab_size="mini"
-                    android:tag="musicVideo"
-                    android:onClick="@{viewmodel::onclick}"
-                    app:fab_label="Music Video"/>
-
-            <com.github.clans.fab.FloatingActionButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_fab_movie"
-                    app:fab_size="mini"
-                    android:tag="movie"
-                    android:onClick="@{viewmodel::onclick}"
-                    app:fab_label="Movie"/>
-
-            <com.github.clans.fab.FloatingActionButton
-                    android:id="@+id/fab2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_fab_tv"
-                    fab:fab_size="mini"
-                    android:tag="tvShow"
-                    android:onClick="@{viewmodel::onclick}"
-                    fab:fab_label="TV Show"/>
-
-        </com.github.clans.fab.FloatingActionMenu>
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -138,7 +88,56 @@
                         android:layout_height="match_parent" tools:layout_editor_absoluteY="557dp"
                         tools:layout_editor_absoluteX="0dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </LinearLayout>
+        <com.github.clans.fab.FloatingActionMenu
+                android:id="@+id/fab_filter_menu_favorite"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                app:menu_icon="@drawable/ic_fab_filter_list"
+                app:menu_labels_ellipsize="end"
+                app:menu_labels_singleLine="true"
+                app:menu_backgroundColor="#ccffffff">
+
+            <com.github.clans.fab.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_fab_music"
+                    app:fab_size="mini"
+                    android:tag="music"
+                    android:onClick="@{viewmodel::onclick}"
+                    fab:fab_label="Music"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_fab_music_video"
+                    app:fab_size="mini"
+                    android:tag="musicVideo"
+                    android:onClick="@{viewmodel::onclick}"
+                    app:fab_label="Music Video"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_fab_movie"
+                    app:fab_size="mini"
+                    android:tag="movie"
+                    android:onClick="@{viewmodel::onclick}"
+                    app:fab_label="Movie"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/fab2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_fab_tv"
+                    fab:fab_size="mini"
+                    android:tag="tvShow"
+                    android:onClick="@{viewmodel::onclick}"
+                    fab:fab_label="TV Show"/>
+
+        </com.github.clans.fab.FloatingActionMenu>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
