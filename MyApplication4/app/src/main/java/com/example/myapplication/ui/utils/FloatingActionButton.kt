@@ -25,7 +25,7 @@ fun fabFilterAnimation(fab: FloatingActionMenu) {
 
     scaleInX.addListener(object : AnimatorListenerAdapter() {
         override fun onAnimationStart(animation: Animator?) {
-            fab.menuIconView.setImageResource(if (!fab.isOpened) R.drawable.ic_fab_filter_close else R.drawable.ic_fab_filter_list)
+            fab.menuIconView.setImageResource(if (!fab.isOpened) R.drawable.ic_close else R.drawable.ic_fab_filter_list)
         }
     })
 
