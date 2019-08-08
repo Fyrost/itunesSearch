@@ -26,7 +26,7 @@ class ITunesRepositoryImpl(
     override val downloadedITunesResult: MutableLiveData<List<ITunesResult>> = MutableLiveData()
 
     private val _inProgress = MutableLiveData<Boolean>()
-    override val inProgress: LiveData<out Boolean>
+    override val inProgress: LiveData<Boolean>
         get() = _inProgress
 
     override fun getResults(term: String, media: String): LiveData<List<ITunesResult>> {

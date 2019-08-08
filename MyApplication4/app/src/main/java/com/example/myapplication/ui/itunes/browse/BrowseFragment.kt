@@ -21,6 +21,7 @@ import com.example.myapplication.ui.utils.toBrowseItems
 
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+
 import kotlinx.android.synthetic.main.browse_fragment.*
 
 import org.kodein.di.KodeinAware
@@ -81,6 +82,10 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
             if (fab_filter_menu_browse.isOpened) {
                 fab_filter_menu_browse.toggle(false)
             }
+        })
+
+        viewModel.isInProgress.observe(this@BrowseFragment, Observer { visible ->
+            viewModel.inProgress.postValue(visible)
         })
 
         fabFilterAnimation(fab_filter_menu_browse)

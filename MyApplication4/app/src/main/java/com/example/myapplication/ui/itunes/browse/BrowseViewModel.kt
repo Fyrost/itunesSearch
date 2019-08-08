@@ -28,6 +28,7 @@ class BrowseViewModel(
 
     @Bindable
     val inProgress: MutableLiveData<Boolean> = MutableLiveData()
+    val isInProgress: LiveData<Boolean> = iTunesRepository.inProgress
 
     private var media: String = "movie"
 
@@ -37,9 +38,6 @@ class BrowseViewModel(
 
     init {
         inProgress.postValue(false)
-        iTunesRepository.inProgress.observeForever { visible ->
-            inProgress.postValue(visible)
-        }
     }
 
     fun fetchResult() {
