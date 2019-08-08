@@ -69,7 +69,7 @@ class FavoriteFragment : Fragment(), KodeinAware {
                 timer!!.cancel()
             }
             timer = Timer()
-            timer!!.schedule(300L) {
+            timer!!.schedule(500L) {
                 viewModel.fetchFavorites()
             }
         })
