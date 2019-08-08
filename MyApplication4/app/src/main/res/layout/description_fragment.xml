@@ -27,7 +27,6 @@
                         android:id="@+id/imageView_Art_Description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/sample_detail_image"
                         app:imageUrl="@{viewmodel.artworkUrl100}"
                         android:scaleType="center"
                         android:adjustViewBounds="true"/>
