@@ -8,6 +8,7 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.Navigation
 
 import com.bumptech.glide.Glide
 
@@ -61,6 +62,10 @@ class DescriptionViewModel(
 
     fun onfavoriteclick(v : View) {
         databaseRepository.insertResult(result)
+    }
+
+    fun oncloseclick(v: View) {
+        Navigation.findNavController(v).popBackStack()
     }
 
     fun detailDescription(iTunesResult: ITunesResult){
