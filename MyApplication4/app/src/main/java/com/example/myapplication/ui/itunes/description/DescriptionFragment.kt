@@ -41,16 +41,12 @@ class DescriptionFragment : Fragment(), KodeinAware {
         super.onActivityCreated(savedInstanceState)
         val safeArgs = arguments?.let { DescriptionFragmentArgs.fromBundle(it) }
         iTunesResult = safeArgs?.iTunesResult!!
-        viewModel.detailDescription(iTunesResult)
-//        bindUI()
+
+        bindUI()
     }
 
     private fun bindUI() {
-        textView_description_title.text = iTunesResult.trackName
-
-        fab.setOnClickListener {
-            viewModel.insertResult()
-        }
+        viewModel.detailDescription(iTunesResult)
     }
 
 }
