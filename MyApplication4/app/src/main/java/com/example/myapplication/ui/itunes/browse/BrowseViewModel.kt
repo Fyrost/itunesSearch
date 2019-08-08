@@ -1,15 +1,19 @@
 package com.example.myapplication.ui.itunes.browse
 
+
 import android.view.View
+
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.databinding.PropertyChangeRegistry
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
+
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.data.repository.ITunesRepository
+
 
 class BrowseViewModel(
     private val iTunesRepository: ITunesRepository
@@ -25,17 +29,33 @@ class BrowseViewModel(
     @Bindable
     var term = MutableLiveData<String>()
 
+    @Bindable
+    var inProgress = MutableLiveData<Int>()
+
+    init {
+        inProgress.value = View.VISIBLE
+    }
+
     private var media: String = "music"
 
     var result: LiveData<List<ITunesResult>> = iTunesRepository.getResults(term.value.toString(), media)
 
     fun fetchResult() {
+        setInProgress()
         result = iTunesRepository.getResults(term.value.toString(), media)
     }
 
     fun onclick(v: View) {
         media = v.tag.toString()
         fetchResult()
+    }
+
+    private fun setInProgress() {
+        inProgress.postValue(View.VISIBLE)
+    }
+
+    fun setNotInProgress() {
+        inProgress.postValue(View.GONE)
     }
 
     fun removeNull(iTunesResult: List<ITunesResult>): List<ITunesResult> {

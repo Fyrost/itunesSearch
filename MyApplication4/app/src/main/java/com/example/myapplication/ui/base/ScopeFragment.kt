@@ -1,11 +1,16 @@
 package com.example.myapplication.ui.base
 
+
 import android.os.Bundle
+
 import androidx.fragment.app.Fragment
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+
 import kotlin.coroutines.CoroutineContext
+
 
 abstract class ScopeFragment: Fragment(), CoroutineScope {
     private lateinit var job: Job
