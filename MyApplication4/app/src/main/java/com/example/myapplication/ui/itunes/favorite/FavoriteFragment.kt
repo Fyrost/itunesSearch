@@ -75,13 +75,13 @@ class FavoriteFragment : Fragment(), KodeinAware {
         })
 
         viewModel.result.observe(this, Observer { iTunesResult ->
+            if (fab_filter_menu_favorite.isOpened) {
+                fab_filter_menu_favorite.toggle(false)
+            }
             if (iTunesResult == null)return@Observer
             group_loading1.visibility = View.GONE
             filteredITunesResult = iTunesResult
             updateItems(filteredITunesResult.toFavoriteItem())
-            if (fab_filter_menu_favorite.isOpened) {
-                fab_filter_menu_favorite.toggle(false)
-            }
             viewModel.setNotInProgress()
         })
 
