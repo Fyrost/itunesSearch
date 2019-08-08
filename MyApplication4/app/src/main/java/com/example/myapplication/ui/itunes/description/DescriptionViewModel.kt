@@ -4,7 +4,9 @@ package com.example.myapplication.ui.itunes.description
 import android.content.Context
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.databinding.BindingAdapter
+import androidx.databinding.adapters.ToolbarBindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -69,8 +71,10 @@ class DescriptionViewModel(
     fun onFavoriteClick(v : View) {
         if (isDuplicate.value!!) {
             databaseRepository.deleteResult(result)
+            Toast.makeText(appContext, "Removed from favorites", Toast.LENGTH_SHORT).show()
         } else {
             databaseRepository.insertResult(result)
+            Toast.makeText(appContext, "Added to favorites", Toast.LENGTH_SHORT).show()
         }
     }
 

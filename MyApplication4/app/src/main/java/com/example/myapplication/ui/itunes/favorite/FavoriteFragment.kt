@@ -62,6 +62,11 @@ class FavoriteFragment : Fragment(), KodeinAware {
         bindUI()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchFavorites()
+    }
+
     private fun bindUI() {
         viewModel.term.observe(this, Observer {
             if (it.isNullOrBlank()) return@Observer
