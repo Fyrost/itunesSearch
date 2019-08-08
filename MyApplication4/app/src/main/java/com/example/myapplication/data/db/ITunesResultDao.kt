@@ -22,4 +22,7 @@ interface ITunesResultDao {
 
     @Query("SELECT * FROM itunes_result")
     fun getAll(): List<ITunesResult>
+
+    @Query("SELECT COUNT(*) FROM itunes_result WHERE trackId = :id")
+    fun getSingleResult(id: Int): Int
 }
