@@ -10,7 +10,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 import com.bumptech.glide.Glide
-import com.example.myapplication.R
 
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.data.repository.DatabaseRepository
@@ -66,7 +65,11 @@ class DescriptionViewModel(
         get() = _collectionPrice
 
     fun onFavoriteClick(v : View) {
-        databaseRepository.insertResult(result)
+        if (isDuplicate.value!!) {
+            databaseRepository.deleteResult(result)
+        } else {
+            databaseRepository.insertResult(result)
+        }
     }
 
     fun detailDescription(iTunesResult: ITunesResult){

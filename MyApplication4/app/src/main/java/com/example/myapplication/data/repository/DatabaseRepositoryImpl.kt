@@ -40,6 +40,13 @@ class DatabaseRepositoryImpl(
         }
     }
 
+    override fun deleteResult(iTunesResult: ITunesResult) {
+        GlobalScope.launch(Dispatchers.IO) {
+            iTunesResultDao.deleteResult(iTunesResult)
+            _isDuplicate.postValue(false)
+        }
+    }
+
     override fun getMediaResult(media: String) {
         GlobalScope.launch(Dispatchers.IO) {
             println(iTunesResultDao.getMediaResult(media))
