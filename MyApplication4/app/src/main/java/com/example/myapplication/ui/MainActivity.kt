@@ -2,6 +2,7 @@ package com.example.myapplication.ui
 
 
 import android.os.Bundle
+import android.view.View
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -22,17 +23,37 @@ class MainActivity : AppCompatActivity(), KodeinAware {
 
     private lateinit var navController: NavController
 
+    override fun onSupportNavigateUp(): Boolean {
+        return NavigationUI.navigateUp(navController, null)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setupNavigation()
+    }
+
+    private fun setupNavigation() {
         setSupportActionBar(toolbar)
         navController = Navigation.findNavController(this@MainActivity, R.id.nav_host_fragment)
         bottom_nav.setupWithNavController(navController)
         NavigationUI.setupActionBarWithNavController(this@MainActivity, navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when(destination.id) {
+                R.id.browseFragment -> showBottomNav()
+                R.id.favoriteFragment -> showBottomNav()
+                R.id.descriptionFragment -> hideBottomNav()
+            }
+        }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        return NavigationUI.navigateUp(navController, null)
+    private fun hideBottomNav() {
+        bottom_nav.visibility = View.GONE
+    }
+
+    private fun showBottomNav() {
+        bottom_nav.visibility = View.VISIBLE
     }
 }
