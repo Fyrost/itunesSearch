@@ -5,6 +5,7 @@
         xmlns:fab="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="android.view.View"/>
         <variable
                 name="viewmodel"
                 type="com.example.myapplication.ui.itunes.browse.BrowseViewModel"/>
@@ -49,7 +50,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:visibility="@{safeUnbox(viewmodel.inProgress)}"
+                        android:visibility="@{viewmodel.inProgress ? View.VISIBLE : View.GONE}"
                         android:background="@color/transparentPrimaryLight">
                     <androidx.constraintlayout.widget.Group
                             android:id="@+id/group_loading"
