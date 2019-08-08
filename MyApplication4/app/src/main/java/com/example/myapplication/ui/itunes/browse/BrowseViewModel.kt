@@ -2,10 +2,7 @@ package com.example.myapplication.ui.itunes.browse
 
 
 import android.view.View
-
-import androidx.databinding.Bindable
-import androidx.databinding.Observable
-import androidx.databinding.PropertyChangeRegistry
+import androidx.databinding.*
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -30,32 +27,29 @@ class BrowseViewModel(
     var term = MutableLiveData<String>()
 
     @Bindable
-    var inProgress = MutableLiveData<Int>()
+    val inProgress: MutableLiveData<Boolean> = MutableLiveData()
+    val isInProgress: LiveData<Boolean> = iTunesRepository.inProgress
+
+    private var media: String = "movie"
+
+    private var _result=  MutableLiveData<List<ITunesResult>>()
+    val result: LiveData<List<ITunesResult>>
+        get() = _result
 
     init {
-        inProgress.value = View.VISIBLE
+        inProgress.postValue(false)
     }
 
-    private var media: String = "music"
-
-    var result: LiveData<List<ITunesResult>> = iTunesRepository.getResults(term.value.toString(), media)
-
     fun fetchResult() {
-        setInProgress()
-        result = iTunesRepository.getResults(term.value.toString(), media)
+        var searchTerm: String? = term.value.toString()
+        if (!searchTerm.isNullOrBlank()) {
+            _result.postValue(iTunesRepository.getResults(term.value.toString(), media).value)
+        }
     }
 
     fun onclick(v: View) {
         media = v.tag.toString()
         fetchResult()
-    }
-
-    private fun setInProgress() {
-        inProgress.postValue(View.VISIBLE)
-    }
-
-    fun setNotInProgress() {
-        inProgress.postValue(View.GONE)
     }
 
     fun removeNull(iTunesResult: List<ITunesResult>): List<ITunesResult> {

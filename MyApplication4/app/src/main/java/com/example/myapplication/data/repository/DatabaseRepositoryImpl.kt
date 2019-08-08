@@ -15,6 +15,10 @@ import kotlinx.coroutines.launch
 class DatabaseRepositoryImpl(
     private val iTunesResultDao: ITunesResultDao
 ) : DatabaseRepository {
+    private val _inProgress = MutableLiveData<Boolean>()
+    override val inProgress: LiveData<Boolean>
+        get() = _inProgress
+
     private val _results = MutableLiveData<List<ITunesResult>>()
     override val results: LiveData<List<ITunesResult>>
         get() = _results
