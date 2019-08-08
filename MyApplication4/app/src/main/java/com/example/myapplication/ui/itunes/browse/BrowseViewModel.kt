@@ -32,9 +32,7 @@ class BrowseViewModel(
 
     private var media: String = "movie"
 
-    private var _result=  MutableLiveData<List<ITunesResult>>()
-    val result: LiveData<List<ITunesResult>>
-        get() = _result
+    val result: LiveData<List<ITunesResult>> = iTunesRepository.downloadedITunesResult
 
     init {
         inProgress.postValue(false)
@@ -43,7 +41,7 @@ class BrowseViewModel(
     fun fetchResult() {
         var searchTerm: String? = term.value.toString()
         if (!searchTerm.isNullOrBlank()) {
-            _result.postValue(iTunesRepository.getResults(term.value.toString(), media).value)
+            iTunesRepository.getResults(searchTerm, media)
         }
     }
 
