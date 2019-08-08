@@ -77,14 +77,14 @@
         </LinearLayout>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab"
-                android:src="@drawable/ic_tab_favorite"
+                android:src="@{viewmodel.isDuplicate ? @drawable/ic_favorite_border : @drawable/ic_tab_favorite}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/colorPrimaryLight"
                 app:borderWidth="0dp"
                 android:elevation="1dp"
                 android:layout_marginEnd="40dp"
-                android:onClick="@{viewmodel::onfavoriteclick}"
+                android:onClick="@{viewmodel::onFavoriteClick}"
                 app:layout_anchorGravity="end|bottom"
                 app:layout_anchor="@id/header"
                 />

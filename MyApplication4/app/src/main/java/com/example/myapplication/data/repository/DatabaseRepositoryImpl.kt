@@ -36,6 +36,14 @@ class DatabaseRepositoryImpl(
     override fun insertResult(iTunesResult: ITunesResult) {
         GlobalScope.launch(Dispatchers.IO) {
             iTunesResultDao.insert(iTunesResult)
+            _isDuplicate.postValue(true)
+        }
+    }
+
+    override fun deleteResult(iTunesResult: ITunesResult) {
+        GlobalScope.launch(Dispatchers.IO) {
+            iTunesResultDao.deleteResult(iTunesResult)
+            _isDuplicate.postValue(false)
         }
     }
 

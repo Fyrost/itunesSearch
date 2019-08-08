@@ -53,6 +53,10 @@ class DescriptionFragment : Fragment(), KodeinAware {
 
     private fun bindUI() {
         viewModel.detailDescription(iTunesResult)
+
+        viewModel._isDuplicate.observe(this@DescriptionFragment, Observer {isDuplicate ->
+            viewModel.isDuplicate.postValue(isDuplicate)
+        })
     }
 
 }
