@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 import com.bumptech.glide.Glide
+import com.example.myapplication.R
 
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.data.repository.DatabaseRepository
@@ -30,6 +31,12 @@ class DescriptionViewModel(
     var descriptionVisible: Boolean = true
     var albumVisible: Boolean = true
 
+    val isDuplicate: MutableLiveData<Boolean> = MutableLiveData()
+    var _isDuplicate: LiveData<Boolean> = databaseRepository.isDuplicate
+
+    private val _trackId = MutableLiveData<Int>()
+    private val trackId: LiveData<Int>
+        get() = _trackId
     private val _kind = MutableLiveData<String>()
     val kind: LiveData<String>
         get() = _kind
@@ -58,13 +65,14 @@ class DescriptionViewModel(
     val collectionPrice: LiveData<String>
         get() = _collectionPrice
 
-
-    fun onfavoriteclick(v : View) {
+    fun onFavoriteClick(v : View) {
         databaseRepository.insertResult(result)
     }
 
     fun detailDescription(iTunesResult: ITunesResult){
+        println(iTunesResult.trackId)
         result = iTunesResult
+        _trackId.value = iTunesResult.trackId
         _kind.value = iTunesResult.kind?.capitalize()
         _trackName.value = iTunesResult.trackName
         artworkUrl100 = iTunesResult.artworkUrl100.largerImage()
@@ -79,6 +87,7 @@ class DescriptionViewModel(
         descriptionVisible = !(iTunesResult.longDescription.isNullOrBlank())
         albumVisible = !(iTunesResult.collectionName.isNullOrBlank() || !(iTunesResult.kind=="song" || iTunesResult.kind=="music-video") )
         artistLabel = if(iTunesResult.kind == "tv-episode") "SHOW" else "ARTIST"
+        databaseRepository.isDuplicate(trackId.value!!)
     }
 }
 
