@@ -1,12 +1,16 @@
 package com.example.myapplication.ui.utils
 
+
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.view.animation.OvershootInterpolator
+
 import com.example.myapplication.R
+
 import com.github.clans.fab.FloatingActionMenu
+
 
 fun fabFilterAnimation(fab: FloatingActionMenu) {
     val set = AnimatorSet()

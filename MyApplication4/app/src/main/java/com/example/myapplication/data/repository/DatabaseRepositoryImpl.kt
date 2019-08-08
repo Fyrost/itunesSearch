@@ -1,20 +1,31 @@
 package com.example.myapplication.data.repository
 
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+
 import com.example.myapplication.data.db.ITunesResultDao
 import com.example.myapplication.data.db.entity.ITunesResult
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+
 class DatabaseRepositoryImpl(
     private val iTunesResultDao: ITunesResultDao
 ) : DatabaseRepository {
+    private val _inProgress = MutableLiveData<Boolean>()
+    override val inProgress: LiveData<Boolean>
+        get() = _inProgress
 
     private val _results = MutableLiveData<List<ITunesResult>>()
     override val results: LiveData<List<ITunesResult>>
         get() = _results
+
+    private val _isDuplicate = MutableLiveData<Boolean>()
+    override val isDuplicate: LiveData<Boolean>
+        get() = _isDuplicate
 
     override fun getAll() {
         GlobalScope.launch(Dispatchers.IO) {
@@ -38,6 +49,15 @@ class DatabaseRepositoryImpl(
     override fun getMediaTermResult(term: String, media: String) {
         GlobalScope.launch(Dispatchers.IO) {
             _results.postValue(iTunesResultDao.getMediaTermResult("%$term%", media))
+        }
+    }
+
+    override fun isDuplicate(id: Int) {
+        GlobalScope.launch(Dispatchers.IO) {
+            when (iTunesResultDao.getSingleResult(id)) {
+                0 -> _isDuplicate.postValue(false)
+                else -> _isDuplicate.postValue(true)
+            }
         }
     }
 }

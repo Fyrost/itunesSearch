@@ -1,15 +1,16 @@
 package com.example.myapplication.ui.itunes.browse
 
+
 import android.view.View
-import androidx.databinding.Bindable
-import androidx.databinding.Observable
-import androidx.databinding.PropertyChangeRegistry
+import androidx.databinding.*
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
+
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.data.repository.ITunesRepository
+
 
 class BrowseViewModel(
     private val iTunesRepository: ITunesRepository
@@ -25,12 +26,25 @@ class BrowseViewModel(
     @Bindable
     var term = MutableLiveData<String>()
 
-    private var media: String = "music"
+    @Bindable
+    val inProgress: MutableLiveData<Boolean> = MutableLiveData()
+    val isInProgress: LiveData<Boolean> = iTunesRepository.inProgress
 
-    var result: LiveData<List<ITunesResult>> = iTunesRepository.getResults(term.value.toString(), media)
+    private var media: String = "movie"
+
+    private var _result=  MutableLiveData<List<ITunesResult>>()
+    val result: LiveData<List<ITunesResult>>
+        get() = _result
+
+    init {
+        inProgress.postValue(false)
+    }
 
     fun fetchResult() {
-        result = iTunesRepository.getResults(term.value.toString(), media)
+        var searchTerm: String? = term.value.toString()
+        if (!searchTerm.isNullOrBlank()) {
+            _result.postValue(iTunesRepository.getResults(term.value.toString(), media).value)
+        }
     }
 
     fun onclick(v: View) {

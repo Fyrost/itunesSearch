@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.itunes.description
 
+
 import android.content.Context
 import android.view.View
 import android.widget.ImageView
@@ -7,12 +8,15 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+
 import com.bumptech.glide.Glide
+
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.data.repository.DatabaseRepository
 import com.example.myapplication.ui.utils.getYear
 import com.example.myapplication.ui.utils.largerImage
 import com.example.myapplication.ui.utils.priceFormat
+
 
 class DescriptionViewModel(
     private val databaseRepository: DatabaseRepository,
@@ -75,9 +79,7 @@ class DescriptionViewModel(
         descriptionVisible = !(iTunesResult.longDescription.isNullOrBlank())
         albumVisible = !(iTunesResult.collectionName.isNullOrBlank() || !(iTunesResult.kind=="song" || iTunesResult.kind=="music-video") )
         artistLabel = if(iTunesResult.kind == "tv-episode") "SHOW" else "ARTIST"
-
     }
-
 }
 
 @BindingAdapter("app:imageUrl")

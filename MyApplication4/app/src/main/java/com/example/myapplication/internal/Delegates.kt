@@ -1,6 +1,8 @@
 package com.example.myapplication.internal
 
+
 import kotlinx.coroutines.*
+
 
 fun <T> lazyDeferred(block: suspend CoroutineScope.() -> T): Lazy<Deferred<T>> {
     return lazy {
