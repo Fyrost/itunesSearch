@@ -19,6 +19,10 @@ class DatabaseRepositoryImpl(
     override val results: LiveData<List<ITunesResult>>
         get() = _results
 
+    private val _isDuplicate = MutableLiveData<Boolean>()
+    override val isDuplicate: LiveData<Boolean>
+        get() = _isDuplicate
+
     override fun getAll() {
         GlobalScope.launch(Dispatchers.IO) {
             _results.postValue(iTunesResultDao.getAll())
@@ -41,6 +45,15 @@ class DatabaseRepositoryImpl(
     override fun getMediaTermResult(term: String, media: String) {
         GlobalScope.launch(Dispatchers.IO) {
             _results.postValue(iTunesResultDao.getMediaTermResult("%$term%", media))
+        }
+    }
+
+    override fun isDuplicate(id: Int) {
+        GlobalScope.launch(Dispatchers.IO) {
+            when (iTunesResultDao.getSingleResult(id)) {
+                0 -> _isDuplicate.postValue(false)
+                else -> _isDuplicate.postValue(true)
+            }
         }
     }
 }
