@@ -44,10 +44,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     // Navigation
-    implementation 'androidx.navigation:navigation-fragment:2.1.0-beta02'
-    implementation 'androidx.navigation:navigation-ui:2.1.0-beta02'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0-beta02'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.1.0-beta02'
+    implementation 'androidx.navigation:navigation-fragment:2.2.0-alpha01'
+    implementation 'androidx.navigation:navigation-ui:2.2.0-alpha01'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.2.0-alpha01'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.2.0-alpha01'
 
     implementation 'androidx.core:core-ktx:1.0.2'
     implementation "androidx.constraintlayout:constraintlayout:1.1.3"
