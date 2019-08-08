@@ -25,13 +25,16 @@
                     android:layout_height="360dp">
                 <ImageView
                         android:id="@+id/imageView_Art_Description"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/sample_detail_image"
-                        android:src="@drawable/shape_image_foreground_gradient"
                         app:imageUrl="@{viewmodel.artworkUrl100}"
-                        android:adjustViewBounds="false"
-                        android:scaleType="fitXY"/>
+                        android:scaleType="center"
+                        android:adjustViewBounds="true"/>
+                <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_image_foreground_gradient"/>
                 <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -53,7 +56,8 @@
                         android:lineSpacingExtra="8sp"
                         android:textColor="@color/colorText"
                         android:layout_marginBottom="40dp"
-                        android:text="Hello"
+                        android:text="@{viewmodel.trackName}"
+                        android:textAlignment="center"
                         tools:text="Blade Runner: 2049"
                         app:layout_anchorGravity="bottom|center"
                         app:layout_anchor="@+id/imageView_Art_Description"/>
@@ -64,7 +68,7 @@
                     android:layout_height="match_parent">
 
                <include
-                       layout="@layout/description_content_show"
+                       layout="@layout/description_content"
                        app:viewmodel="@{((DescriptionViewModel) viewmodel)}"
                />
 
@@ -77,9 +81,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/colorPrimaryLight"
-                android:clickable="true"
+                app:borderWidth="0dp"
                 android:elevation="1dp"
                 android:layout_marginEnd="40dp"
+                android:onClick="@{viewmodel::onfavoriteclick}"
                 app:layout_anchorGravity="end|bottom"
                 app:layout_anchor="@id/header"
                 />
