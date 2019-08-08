@@ -81,7 +81,6 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
             if (fab_filter_menu_browse.isOpened) {
                 fab_filter_menu_browse.toggle(false)
             }
-            viewModel.setNotInProgress()
         })
 
         fabFilterAnimation(fab_filter_menu_browse)
