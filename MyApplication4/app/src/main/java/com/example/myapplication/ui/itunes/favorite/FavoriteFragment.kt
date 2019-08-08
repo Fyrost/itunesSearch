@@ -82,6 +82,7 @@ class FavoriteFragment : Fragment(), KodeinAware {
             if (fab_filter_menu_favorite.isOpened) {
                 fab_filter_menu_favorite.toggle(false)
             }
+            viewModel.setNotInProgress()
         })
 
         initRecyclerView(filteredITunesResult.toFavoriteItem())

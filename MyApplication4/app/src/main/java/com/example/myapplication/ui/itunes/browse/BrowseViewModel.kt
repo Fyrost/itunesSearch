@@ -29,17 +29,33 @@ class BrowseViewModel(
     @Bindable
     var term = MutableLiveData<String>()
 
+    @Bindable
+    var inProgress = MutableLiveData<Int>()
+
+    init {
+        inProgress.value = View.VISIBLE
+    }
+
     private var media: String = "music"
 
     var result: LiveData<List<ITunesResult>> = iTunesRepository.getResults(term.value.toString(), media)
 
     fun fetchResult() {
+        setInProgress()
         result = iTunesRepository.getResults(term.value.toString(), media)
     }
 
     fun onclick(v: View) {
         media = v.tag.toString()
         fetchResult()
+    }
+
+    private fun setInProgress() {
+        inProgress.postValue(View.VISIBLE)
+    }
+
+    fun setNotInProgress() {
+        inProgress.postValue(View.GONE)
     }
 
     fun removeNull(iTunesResult: List<ITunesResult>): List<ITunesResult> {
