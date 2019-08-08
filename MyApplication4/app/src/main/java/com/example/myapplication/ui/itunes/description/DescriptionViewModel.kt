@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 
 import com.bumptech.glide.Glide
 
@@ -89,5 +90,12 @@ class DescriptionViewModel(
 
 @BindingAdapter("app:imageUrl")
 fun loadImage(view: ImageView, url: String?) {
-    Glide.with(view.context).load(url).into(view)
+    val circularProgressDrawable = CircularProgressDrawable(view.context)
+    circularProgressDrawable.strokeWidth = 5f
+    circularProgressDrawable.centerRadius = 30f
+    circularProgressDrawable.start()
+    Glide.with(view.context)
+        .load(url)
+        .placeholder(circularProgressDrawable)
+        .into(view)
 }
