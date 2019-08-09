@@ -17,6 +17,7 @@ import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.databinding.BrowseFragmentBinding
 import com.example.myapplication.ui.base.ScopeFragment
 import com.example.myapplication.ui.utils.fabFilterAnimation
+import com.example.myapplication.ui.utils.removeNull
 import com.example.myapplication.ui.utils.toBrowseItems
 
 import com.xwray.groupie.GroupAdapter
@@ -42,12 +43,15 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
     private lateinit var viewModel: BrowseViewModel
     private var timer: Timer? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(BrowseViewModel::class.java)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(BrowseViewModel::class.java)
         val binding  = DataBindingUtil.inflate<BrowseFragmentBinding>(inflater, R.layout.browse_fragment,container,false)
             .apply {
                 this.lifecycleOwner = this@BrowseFragment
@@ -76,16 +80,17 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
 
         initRecyclerView(filteredITunesResult.toBrowseItems())
         viewModel.result.observe(this@BrowseFragment, Observer { iTunesResult ->
-            if (fab_filter_menu_browse.isOpened) {
-                fab_filter_menu_browse.toggle(false)
-            }
             if (iTunesResult == null)return@Observer
-            filteredITunesResult = viewModel.removeNull(iTunesResult)
+            filteredITunesResult = iTunesResult.removeNull()
             updateItems(filteredITunesResult.toBrowseItems())
         })
 
         viewModel.isInProgress.observe(this@BrowseFragment, Observer { visible ->
             viewModel.inProgress.postValue(visible)
+        })
+
+        viewModel.isToggled.observe(this@BrowseFragment, Observer {
+            fab_filter_menu_browse.toggle(false)
         })
 
         fabFilterAnimation(fab_filter_menu_browse)
@@ -97,7 +102,6 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
         }
 
         browse_recyclerView.apply {
-
             layoutManager = GridLayoutManager(this@BrowseFragment.context, 3)
             adapter = groupAdapter
         }
