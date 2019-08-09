@@ -29,7 +29,7 @@ class ITunesRepositoryImpl(
     override val inProgress: LiveData<Boolean>
         get() = _inProgress
 
-    override fun getResults(term: String, media: String): LiveData<List<ITunesResult>> {
+    override fun getResults(term: String?, media: String): LiveData<List<ITunesResult>> {
         _inProgress.postValue(true)
         GlobalScope.launch(Dispatchers.IO) {
             try {

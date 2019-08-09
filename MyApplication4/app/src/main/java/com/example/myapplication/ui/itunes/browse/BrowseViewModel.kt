@@ -34,29 +34,30 @@ class BrowseViewModel(
 
     val result: LiveData<List<ITunesResult>> = iTunesRepository.downloadedITunesResult
 
+    var lastTerm: String? = ""
+    var lastMedia: String? = ""
+    var isToggled: MutableLiveData<Boolean> = MutableLiveData(true)
+
     init {
         inProgress.postValue(false)
     }
 
     fun fetchResult() {
-        var searchTerm: String? = term.value.toString()
-        if (!searchTerm.isNullOrBlank()) {
-            iTunesRepository.getResults(searchTerm, media)
+        var searchTerm: String? = term.value
+        if (lastTerm != searchTerm || lastMedia != media) {
+            if (!searchTerm.isNullOrBlank()) {
+                iTunesRepository.getResults(searchTerm, media)
+            }
+            lastTerm = searchTerm
+            lastMedia = media
         }
     }
 
     fun onclick(v: View) {
         media = v.tag.toString()
+        isToggled.postValue(false)
         fetchResult()
     }
-
-    fun removeNull(iTunesResult: List<ITunesResult>): List<ITunesResult> {
-        var tempResult: MutableList<ITunesResult> = mutableListOf()
-        for (row in iTunesResult) {
-            if (!row.trackName.isNullOrBlank() || row.trackId != 0) {
-                tempResult.add(row)
-            }
-        }
-        return tempResult.toList()
-    }
 }
+
+

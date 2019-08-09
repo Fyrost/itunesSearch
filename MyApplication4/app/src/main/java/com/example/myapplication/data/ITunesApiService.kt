@@ -19,7 +19,7 @@ import retrofit2.http.Query
 interface ITunesApiService {
     @GET("search")
     fun getResults(
-        @Query("term") term: String,
+        @Query("term") term: String?,
         @Query("media") media: String
     ): Call<ITunesResponse>
 
