@@ -24,6 +24,7 @@
                     android:background="?colorPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusableInTouchMode="true"
                     android:elevation="4dp">
                 <EditText
                         android:hint="Search"
@@ -39,6 +40,7 @@
                         android:inputType="textPersonName"
                         android:letterSpacing="0.1"
                         android:ems="10"
+                        android:imeOptions="actionDone"
                         android:text="@={viewmodel.term}"
                         android:drawableEnd="@drawable/ic_tab_browse"
                         android:id="@+id/editText_search"/>
