@@ -88,7 +88,7 @@ class DescriptionViewModel(
         _trackId.value = iTunesResult.trackId
         _kind.value = iTunesResult.kind?.capitalize()
         _trackName.value = iTunesResult.trackName
-        artworkUrl100 = iTunesResult.artworkUrl100.largerImage()
+        artworkUrl100 = iTunesResult.artworkUrl100.largerImage(600)
         _primaryGenreName.value = iTunesResult.primaryGenreName
         _releaseDate.value = iTunesResult.releaseDate.getYear()
         _trackPrice.value = iTunesResult.trackPrice.priceFormat()

@@ -5,6 +5,7 @@ import com.bumptech.glide.Glide
 
 import com.example.myapplication.R
 import com.example.myapplication.data.db.entity.ITunesResult
+import com.example.myapplication.ui.utils.priceFormat
 
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -20,7 +21,7 @@ class FavoriteItem(
         viewHolder.apply {
             textView_title.text = iTunesResult.trackName
             textView_genre.text = iTunesResult.primaryGenreName
-            textView_price.text = iTunesResult.trackPrice.toString()
+            textView_price.text = iTunesResult.trackPrice.priceFormat()
             Glide.with(itemView.context)
                 .load(iTunesResult.artworkUrl100)
                 .into(itemView.imageView_Art)
