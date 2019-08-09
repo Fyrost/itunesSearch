@@ -5,6 +5,8 @@ import com.bumptech.glide.Glide
 
 import com.example.myapplication.R
 import com.example.myapplication.data.db.entity.ITunesResult
+import com.example.myapplication.ui.utils.largerImage
+import com.example.myapplication.ui.utils.priceFormat
 
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -20,9 +22,9 @@ class BrowseItem(
         viewHolder.apply {
             textView_title.text = iTunesResult.trackName
             textView_genre.text = iTunesResult.primaryGenreName
-            textView_price.text = iTunesResult.trackPrice.toString()
+            textView_price.text = iTunesResult.trackPrice.priceFormat()
             Glide.with(itemView.context)
-                .load(iTunesResult.artworkUrl100)
+                .load(iTunesResult.artworkUrl100.largerImage(200))
                 .into(itemView.imageView_Art)
         }
     }
