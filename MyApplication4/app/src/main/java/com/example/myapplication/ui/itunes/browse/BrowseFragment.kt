@@ -16,6 +16,7 @@ import com.example.myapplication.R
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.databinding.BrowseFragmentBinding
 import com.example.myapplication.ui.base.ScopeFragment
+import com.example.myapplication.ui.utils.RecyclerItemDecoration
 import com.example.myapplication.ui.utils.fabFilterAnimation
 import com.example.myapplication.ui.utils.toBrowseItems
 
@@ -97,9 +98,9 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
         }
 
         browse_recyclerView.apply {
-
             layoutManager = GridLayoutManager(this@BrowseFragment.context, 3)
             adapter = groupAdapter
+            addItemDecoration(RecyclerItemDecoration(3,10))
         }
 
         groupAdapter.setOnItemClickListener{ item, view ->
