@@ -38,7 +38,7 @@ class FavoriteFragment : Fragment(), KodeinAware {
     private val viewModelFactory: FavoriteViewModelFactory by instance()
     private lateinit var viewModel: FavoriteViewModel
     private var groupAdapter = GroupAdapter<ViewHolder>()
-    private var filteredITunesResult: List<ITunesResult> = listOf()
+    private var favoriteResultList: List<ITunesResult> = listOf()
 
     private var timer: Timer? = null
 
@@ -62,11 +62,6 @@ class FavoriteFragment : Fragment(), KodeinAware {
         bindUI()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.fetchFavorites()
-    }
-
     private fun bindUI() {
         viewModel.term.observe(this, Observer {
             if (it.isNullOrBlank()) return@Observer
@@ -80,17 +75,25 @@ class FavoriteFragment : Fragment(), KodeinAware {
         })
 
         viewModel.result.observe(this, Observer { iTunesResult ->
-            if (fab_filter_menu_favorite.isOpened) {
-                fab_filter_menu_favorite.toggle(false)
-            }
             if (iTunesResult == null)return@Observer
-            group_loading1.visibility = View.GONE
-            filteredITunesResult = iTunesResult
-            updateItems(filteredITunesResult.toFavoriteItem())
-            viewModel.setNotInProgress()
+            favoriteResultList = iTunesResult
+            updateItems(favoriteResultList.toFavoriteItem())
         })
 
-        initRecyclerView(filteredITunesResult.toFavoriteItem())
+        viewModel.dataChanged.observe(this@FavoriteFragment, Observer { dataChanged ->
+            if (dataChanged) {
+                viewModel.fetchFavorites()
+            }
+        })
+
+        viewModel.isToggled.observe(this@FavoriteFragment, Observer {
+            if (fab_filter_menu_favorite.isOpened) {
+                fab_filter_menu_favorite.toggle(true)
+            }
+        })
+
+        initRecyclerView(favoriteResultList.toFavoriteItem())
+
         fabFilterAnimation(fab_filter_menu_favorite)
     }
 
