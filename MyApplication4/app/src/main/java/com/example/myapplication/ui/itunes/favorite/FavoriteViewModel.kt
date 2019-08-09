@@ -32,33 +32,31 @@ class FavoriteViewModel(
     @Bindable
     var inProgress = MutableLiveData<Int>()
 
+    var isToggled: MutableLiveData<Boolean> = MutableLiveData(false)
+
     var media: String = "movie"
 
     var result: LiveData<List<ITunesResult>> = databaseRepository.results
+    var dataChanged: LiveData<Boolean> = databaseRepository.dataChanged
 
-    init {
-        databaseRepository.getAll()
-    }
+    var lastTerm: String? = ""
+    var lastMedia: String? = ""
 
     fun fetchFavorites() {
-        setInProgress()
-        if (term.value.isNullOrBlank()) {
-            databaseRepository.getMediaResult(media)
-        } else {
-            databaseRepository.getMediaTermResult(term.value.toString(), media)
+        if (dataChanged.value!! || (lastTerm != term.value || media != lastMedia)) {
+            if (term.value.isNullOrBlank()) {
+                databaseRepository.getMediaResult(media)
+            } else {
+                databaseRepository.getMediaTermResult(term.value.toString(), media)
+            }
+            lastTerm = term.value
+            lastMedia = media
         }
     }
 
     fun onclick(v: View) {
+        isToggled.postValue(false)
         media = v.tag.toString()
         fetchFavorites()
-    }
-
-    private fun setInProgress() {
-        inProgress.postValue(View.VISIBLE)
-    }
-
-    fun setNotInProgress() {
-        inProgress.postValue(View.GONE)
     }
 }

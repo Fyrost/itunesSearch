@@ -10,6 +10,7 @@ interface DatabaseRepository {
     val results: LiveData<List<ITunesResult>>
     val isDuplicate: LiveData<Boolean>
     val inProgress: LiveData<Boolean>
+    val dataChanged: LiveData<Boolean>
 
     fun getAll()
     fun insertResult(iTunesResult: ITunesResult)

@@ -91,7 +91,9 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
         })
 
         viewModel.isToggled.observe(this@BrowseFragment, Observer {
-            fab_filter_menu_browse.toggle(false)
+            if (fab_filter_menu_browse.isOpened) {
+                fab_filter_menu_browse.toggle(true)
+            }
         })
 
         fabFilterAnimation(fab_filter_menu_browse)
