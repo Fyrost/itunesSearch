@@ -1,8 +1,7 @@
 package com.example.myapplication.ui
 
 import android.view.Gravity
-import android.view.View
-import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams
 import com.example.myapplication.R
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -15,7 +14,7 @@ class RecyclerHeaderItem(private val message: String,private val isRecyclerEmpty
         viewHolder.apply {
             if(isRecyclerEmpty) {
                 header_container.apply {
-                    layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+                    layoutParams.height = LayoutParams.MATCH_PARENT
                     gravity = Gravity.CENTER
                 }
                 recycler_header.apply {
@@ -23,7 +22,7 @@ class RecyclerHeaderItem(private val message: String,private val isRecyclerEmpty
                     textSize = 22F
                 }
             } else {
-                header_container.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                header_container.layoutParams.height = LayoutParams.WRAP_CONTENT
                 recycler_header.apply {
                     gravity = Gravity.START
                     textSize = 16F
