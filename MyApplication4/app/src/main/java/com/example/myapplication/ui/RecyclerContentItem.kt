@@ -22,7 +22,7 @@ class RecyclerContentItem(
             textView_genre.text = iTunesResult.primaryGenreName
             textView_price.text = iTunesResult.trackPrice.priceFormat()
             Glide.with(itemView.context)
-                .load(iTunesResult.artworkUrl100.largerImage(200))
+                .load(iTunesResult.artworkUrl100.largerImage(130))
                 .into(itemView.imageView_Art)
         }
     }
