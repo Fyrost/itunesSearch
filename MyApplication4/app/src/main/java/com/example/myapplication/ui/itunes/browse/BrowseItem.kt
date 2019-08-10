@@ -30,4 +30,6 @@ class BrowseItem(
     }
 
     override fun getLayout() = R.layout.recycler_view_item
+
+    override fun getSpanSize(spanCount: Int, position: Int) = spanCount/3
 }
