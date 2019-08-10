@@ -40,10 +40,11 @@
                         android:src="@drawable/ic_close"
                         android:id="@+id/close_button_description"
                         android:background="@null"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:padding="12dp"
                         android:onClick="@{viewmodel::oncloseclick}"
-                        app:layout_anchorGravity="start|top"
+                        app:layout_anchorGravity="end|top"
                         app:layout_anchor="@+id/imageView_Art_Description"/>
                 <TextView
                         android:id="@+id/textView_description_title"
