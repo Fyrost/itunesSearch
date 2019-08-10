@@ -15,13 +15,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.databinding.BrowseFragmentBinding
+import com.example.myapplication.ui.RecyclerHeaderItem
 import com.example.myapplication.ui.base.ScopeFragment
-import com.example.myapplication.ui.utils.RecyclerItemDecoration
 import com.example.myapplication.ui.utils.fabFilterAnimation
 import com.example.myapplication.ui.utils.removeNull
 import com.example.myapplication.ui.utils.toBrowseItems
 
 import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 
 import kotlinx.android.synthetic.main.browse_fragment.*
@@ -40,6 +41,7 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
     private val viewModelFactory: BrowseViewModelFactory by instance()
     private var groupAdapter = GroupAdapter<ViewHolder>()
     private var filteredITunesResult: List<ITunesResult> = listOf()
+    private val section = Section()
 
     private lateinit var viewModel: BrowseViewModel
     private var timer: Timer? = null
@@ -55,8 +57,8 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
     ): View? {
         val binding  = DataBindingUtil.inflate<BrowseFragmentBinding>(inflater, R.layout.browse_fragment,container,false)
             .apply {
-                this.lifecycleOwner = this@BrowseFragment
-                this.viewmodel = viewModel
+                lifecycleOwner = this@BrowseFragment
+                viewmodel = viewModel
             }
         return binding.root
     }
@@ -101,24 +103,40 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
 
     private fun initRecyclerView(items: List<BrowseItem>) {
         groupAdapter = GroupAdapter<ViewHolder>().apply {
-            addAll(items)
+            spanCount = 3
         }
 
         browse_recyclerView.apply {
-            layoutManager = GridLayoutManager(this@BrowseFragment.context, 3)
+            layoutManager = GridLayoutManager(this@BrowseFragment.context, groupAdapter.spanCount). apply {
+                spanSizeLookup = groupAdapter.spanSizeLookup
+            }
             adapter = groupAdapter
-            addItemDecoration(RecyclerItemDecoration(3,10))
+//            addItemDecoration(RecyclerItemDecoration(groupAdapter.spanCount,10))
         }
 
-        groupAdapter.setOnItemClickListener{ item, view ->
-            (item as? BrowseItem)?.let {
-                navigateToDescription(it.iTunesResult, view)
+        section.apply {
+            setHeader(RecyclerHeaderItem("Browse and Find medias at the search bar", items.isEmpty()))
+            addAll(items)
+        }
+        groupAdapter.apply {
+            add(section)
+            setOnItemClickListener{ item, view ->
+                (item as? BrowseItem)?.let {
+                    navigateToDescription(it.iTunesResult, view)
+                }
             }
         }
+//        groupAdapter.setOnItemClickListener{ item, view ->
+//            (item as? BrowseItem)?.let {
+//                navigateToDescription(it.iTunesResult, view)
+//            }
+//        }
     }
 
     private fun updateItems(items: List<BrowseItem>) {
-        groupAdapter.update(items)
+        val message = if(items.isEmpty())  "Sorry, we couldn't find any media for \"${viewModel.lastTerm}\"" else "Results for \"${viewModel.lastTerm}\""
+        section.setHeader(RecyclerHeaderItem(message,items.isEmpty()))
+        section.update(items)
     }
 
     private fun navigateToDescription(iTunesResult: ITunesResult, view: View) {
