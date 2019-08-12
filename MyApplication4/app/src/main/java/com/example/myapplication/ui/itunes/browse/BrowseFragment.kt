@@ -27,15 +27,13 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 
 import kotlinx.android.synthetic.main.browse_fragment.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
-
-import java.util.*
-
-import kotlin.concurrent.schedule
-
 
 class BrowseFragment : ScopeFragment(), KodeinAware {
     override val kodein by closestKodein()
@@ -45,7 +43,7 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
     private val section = Section()
 
     private lateinit var viewModel: BrowseViewModel
-    private var timer: Timer? = null
+    private var job: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,17 +68,15 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
     private fun bindUI() {
         viewModel.term.observe(this@BrowseFragment, Observer {
             if (it.isNullOrBlank()) return@Observer
-            if(timer != null) {
-                timer!!.cancel()
-            }
-            timer = Timer()
-            timer!!.schedule(500L) {
+            job?.cancel()
+            job = launch {
+                delay(500L)
                 viewModel.fetchResult()
             }
         })
 
         initRecyclerView(filteredITunesResult.toRecyclerContentItem())
-        viewModel.result.observe(this@BrowseFragment, Observer { iTunesResult ->
+        viewModel.result.observe(this@BrowseFragment, Observer{ iTunesResult ->
             if (iTunesResult == null)return@Observer
             filteredITunesResult = iTunesResult.removeNull()
             updateItems(filteredITunesResult.toRecyclerContentItem())
