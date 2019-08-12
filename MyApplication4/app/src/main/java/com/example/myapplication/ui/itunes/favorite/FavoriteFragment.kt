@@ -16,31 +16,34 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.databinding.FavoriteFragmentBinding
+import com.example.myapplication.ui.RecyclerContentItem
+import com.example.myapplication.ui.RecyclerHeaderItem
+import com.example.myapplication.ui.base.ScopeFragment
 import com.example.myapplication.ui.utils.fabFilterAnimation
-import com.example.myapplication.ui.utils.toFavoriteItem
+import com.example.myapplication.ui.utils.toRecyclerContentItem
 
 import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 
 import kotlinx.android.synthetic.main.favorite_fragment.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
-import java.util.*
-
-import kotlin.concurrent.schedule
-
-
-class FavoriteFragment : Fragment(), KodeinAware {
+class FavoriteFragment : ScopeFragment(), KodeinAware {
     override val kodein by closestKodein()
     private val viewModelFactory: FavoriteViewModelFactory by instance()
-    private lateinit var viewModel: FavoriteViewModel
     private var groupAdapter = GroupAdapter<ViewHolder>()
     private var favoriteResultList: List<ITunesResult> = listOf()
+    private val section = Section()
 
-    private var timer: Timer? = null
+    private lateinit var viewModel: FavoriteViewModel
+    var job: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,14 +53,14 @@ class FavoriteFragment : Fragment(), KodeinAware {
             .get(FavoriteViewModel::class.java)
         val binding  = DataBindingUtil.inflate<FavoriteFragmentBinding>(inflater, R.layout.favorite_fragment,container,false)
             .apply {
-                this.lifecycleOwner = this@FavoriteFragment
-                this.viewmodel = viewModel
+                lifecycleOwner = this@FavoriteFragment
+                viewmodel = viewModel
             }
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View,savedInstanceState: Bundle?) {
+        super.onViewCreated(view,savedInstanceState)
 
         bindUI()
     }
@@ -65,19 +68,18 @@ class FavoriteFragment : Fragment(), KodeinAware {
     private fun bindUI() {
         viewModel.term.observe(this, Observer {
             if (it.isNullOrBlank()) return@Observer
-            if(timer != null) {
-                timer!!.cancel()
-            }
-            timer = Timer()
-            timer!!.schedule(500L) {
+            job?.cancel()
+            job = launch {
+                delay(500L)
                 viewModel.fetchFavorites()
             }
+
         })
 
         viewModel.result.observe(this, Observer { iTunesResult ->
             if (iTunesResult == null)return@Observer
             favoriteResultList = iTunesResult
-            updateItems(favoriteResultList.toFavoriteItem())
+            updateItems(favoriteResultList.toRecyclerContentItem())
         })
 
         viewModel.dataChanged.observe(this@FavoriteFragment, Observer { dataChanged ->
@@ -92,24 +94,34 @@ class FavoriteFragment : Fragment(), KodeinAware {
             }
         })
 
-        initRecyclerView(favoriteResultList.toFavoriteItem())
+        initRecyclerView(favoriteResultList.toRecyclerContentItem())
 
         fabFilterAnimation(fab_filter_menu_favorite)
     }
 
-    private fun initRecyclerView(items: List<FavoriteItem>) {
+    private fun initRecyclerView(items: List<RecyclerContentItem>) {
         groupAdapter.apply {
-            addAll(items)
+            spanCount = 3
         }
 
         favorite_recyclerView.apply {
-            layoutManager = GridLayoutManager(this@FavoriteFragment.context, 3)
+            layoutManager = GridLayoutManager(this@FavoriteFragment.context, groupAdapter.spanCount).apply {
+                spanSizeLookup = groupAdapter.spanSizeLookup
+            }
             adapter = groupAdapter
         }
 
-        groupAdapter.setOnItemClickListener{ item, view ->
-            (item as? FavoriteItem)?.let {
-                navigateToDescription(it.iTunesResult, view)
+        section.apply {
+            setHeader(RecyclerHeaderItem("No ${viewModel.media} in your favorites yet", items.isEmpty()))
+            addAll(items)
+        }
+
+        groupAdapter.apply {
+            add(section)
+            setOnItemClickListener{ item, view ->
+                (item as? RecyclerContentItem)?.let {
+                    navigateToDescription(it.iTunesResult, view)
+                }
             }
         }
     }
@@ -119,7 +131,9 @@ class FavoriteFragment : Fragment(), KodeinAware {
         Navigation.findNavController(view).navigate(actionDetail)
     }
 
-    private fun updateItems(items: List<FavoriteItem>) {
-        groupAdapter.update(items)
+    private fun updateItems(items: List<RecyclerContentItem>) {
+        val message = if(items.isEmpty())  "No ${viewModel.media} in your favorites yet" else "Results for \"${viewModel.media}\""
+        section.setHeader(RecyclerHeaderItem(message,items.isEmpty()))
+        section.update(items)
     }
 }

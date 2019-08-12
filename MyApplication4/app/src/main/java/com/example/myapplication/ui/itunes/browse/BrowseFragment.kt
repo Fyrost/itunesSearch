@@ -15,48 +15,46 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.databinding.BrowseFragmentBinding
+import com.example.myapplication.ui.RecyclerContentItem
+import com.example.myapplication.ui.RecyclerHeaderItem
 import com.example.myapplication.ui.base.ScopeFragment
-import com.example.myapplication.ui.utils.RecyclerItemDecoration
 import com.example.myapplication.ui.utils.fabFilterAnimation
 import com.example.myapplication.ui.utils.removeNull
-import com.example.myapplication.ui.utils.toBrowseItems
+import com.example.myapplication.ui.utils.toRecyclerContentItem
 
 import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 
 import kotlinx.android.synthetic.main.browse_fragment.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
-
-import java.util.*
-
-import kotlin.concurrent.schedule
-
 
 class BrowseFragment : ScopeFragment(), KodeinAware {
     override val kodein by closestKodein()
     private val viewModelFactory: BrowseViewModelFactory by instance()
     private var groupAdapter = GroupAdapter<ViewHolder>()
     private var filteredITunesResult: List<ITunesResult> = listOf()
+    private val section = Section()
 
     private lateinit var viewModel: BrowseViewModel
-    private var timer: Timer? = null
+    private var job: Job? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(BrowseViewModel::class.java)
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(BrowseViewModel::class.java)
         val binding  = DataBindingUtil.inflate<BrowseFragmentBinding>(inflater, R.layout.browse_fragment,container,false)
             .apply {
-                this.lifecycleOwner = this@BrowseFragment
-                this.viewmodel = viewModel
+                lifecycleOwner = this@BrowseFragment
+                viewmodel = viewModel
             }
         return binding.root
     }
@@ -70,20 +68,18 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
     private fun bindUI() {
         viewModel.term.observe(this@BrowseFragment, Observer {
             if (it.isNullOrBlank()) return@Observer
-            if(timer != null) {
-                timer!!.cancel()
-            }
-            timer = Timer()
-            timer!!.schedule(500L) {
+            job?.cancel()
+            job = launch {
+                delay(500L)
                 viewModel.fetchResult()
             }
         })
 
-        initRecyclerView(filteredITunesResult.toBrowseItems())
-        viewModel.result.observe(this@BrowseFragment, Observer { iTunesResult ->
+        initRecyclerView(filteredITunesResult.toRecyclerContentItem())
+        viewModel.result.observe(this@BrowseFragment, Observer{ iTunesResult ->
             if (iTunesResult == null)return@Observer
             filteredITunesResult = iTunesResult.removeNull()
-            updateItems(filteredITunesResult.toBrowseItems())
+            updateItems(filteredITunesResult.toRecyclerContentItem())
         })
 
         viewModel.isInProgress.observe(this@BrowseFragment, Observer { visible ->
@@ -99,26 +95,37 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
         fabFilterAnimation(fab_filter_menu_browse)
     }
 
-    private fun initRecyclerView(items: List<BrowseItem>) {
+    private fun initRecyclerView(items: List<RecyclerContentItem>) {
         groupAdapter = GroupAdapter<ViewHolder>().apply {
-            addAll(items)
+            spanCount = 3
         }
 
         browse_recyclerView.apply {
-            layoutManager = GridLayoutManager(this@BrowseFragment.context, 3)
+            layoutManager = GridLayoutManager(this@BrowseFragment.context, groupAdapter.spanCount). apply {
+                spanSizeLookup = groupAdapter.spanSizeLookup
+            }
             adapter = groupAdapter
-            addItemDecoration(RecyclerItemDecoration(3,10))
         }
 
-        groupAdapter.setOnItemClickListener{ item, view ->
-            (item as? BrowseItem)?.let {
-                navigateToDescription(it.iTunesResult, view)
+        section.apply {
+            setHeader(RecyclerHeaderItem("Browse and Find medias at the search bar", items.isEmpty()))
+            addAll(items)
+        }
+
+        groupAdapter.apply {
+            add(section)
+            setOnItemClickListener{ item, view ->
+                (item as? RecyclerContentItem)?.let {
+                    navigateToDescription(it.iTunesResult, view)
+                }
             }
         }
     }
 
-    private fun updateItems(items: List<BrowseItem>) {
-        groupAdapter.update(items)
+    private fun updateItems(items: List<RecyclerContentItem>) {
+        val message = if(items.isEmpty())  "Sorry, we couldn't find any media for \"${viewModel.lastTerm}\"" else "Results for \"${viewModel.lastTerm}\""
+        section.setHeader(RecyclerHeaderItem(message,items.isEmpty()))
+        section.update(items)
     }
 
     private fun navigateToDescription(iTunesResult: ITunesResult, view: View) {
