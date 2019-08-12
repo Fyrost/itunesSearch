@@ -43,7 +43,7 @@ class FavoriteFragment : ScopeFragment(), KodeinAware {
     private val section = Section()
 
     private lateinit var viewModel: FavoriteViewModel
-    var job: Job? = null
+    private var job: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,7 +66,7 @@ class FavoriteFragment : ScopeFragment(), KodeinAware {
     }
 
     private fun bindUI() {
-        viewModel.term.observe(this, Observer {
+        viewModel.term.observe(this@FavoriteFragment, Observer {
             if (it.isNullOrBlank()) return@Observer
             job?.cancel()
             job = launch {
@@ -76,16 +76,15 @@ class FavoriteFragment : ScopeFragment(), KodeinAware {
 
         })
 
-        viewModel.result.observe(this, Observer { iTunesResult ->
+        initRecyclerView(favoriteResultList.toRecyclerContentItem())
+        viewModel.result.observe(this@FavoriteFragment, Observer { iTunesResult ->
             if (iTunesResult == null)return@Observer
             favoriteResultList = iTunesResult
             updateItems(favoriteResultList.toRecyclerContentItem())
         })
 
         viewModel.dataChanged.observe(this@FavoriteFragment, Observer { dataChanged ->
-            if (dataChanged) {
-                viewModel.fetchFavorites()
-            }
+            if (dataChanged) viewModel.fetchFavorites()
         })
 
         viewModel.isToggled.observe(this@FavoriteFragment, Observer {
@@ -94,13 +93,11 @@ class FavoriteFragment : ScopeFragment(), KodeinAware {
             }
         })
 
-        initRecyclerView(favoriteResultList.toRecyclerContentItem())
-
         fabFilterAnimation(fab_filter_menu_favorite)
     }
 
     private fun initRecyclerView(items: List<RecyclerContentItem>) {
-        groupAdapter.apply {
+        groupAdapter =  GroupAdapter<ViewHolder>().apply {
             spanCount = 3
         }
 

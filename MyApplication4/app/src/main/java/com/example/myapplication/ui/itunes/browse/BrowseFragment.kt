@@ -73,6 +73,7 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
                 delay(500L)
                 viewModel.fetchResult()
             }
+
         })
 
         initRecyclerView(filteredITunesResult.toRecyclerContentItem())
