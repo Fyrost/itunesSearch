@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
     private fun setupBottomNavigationBar(){
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav)
 
-        val navGraphIds = listOf(R.navigation.mobile_navigation)
+        val navGraphIds = listOf(R.navigation.browse,R.navigation.favorite)
 
         val controller = bottomNavigationView.setupWithNavController(
             navGraphIds = navGraphIds,
@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity(), KodeinAware {
             containerId = R.id.nav_host_fragment,
             intent = intent
         )
-
 
 //        navController = Navigation.findNavController(this@MainActivity, R.id.nav_host_fragment)
 //        navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -70,7 +69,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
 //            }
 //        }
 
-
+ 
         currentNavController = controller
     }
 
