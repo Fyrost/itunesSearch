@@ -3,23 +3,22 @@ package com.example.myapplication.ui
 
 import android.os.Bundle
 import android.view.View
-
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupWithNavController
-
 import com.example.myapplication.R
-
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
-
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 
 
 class MainActivity : AppCompatActivity(), KodeinAware {
     override val kodein by closestKodein()
+
+    private var currentNavController: LiveData<NavController>? = null
 
     private lateinit var navController: NavController
 
@@ -30,23 +29,41 @@ class MainActivity : AppCompatActivity(), KodeinAware {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        setupNavigation()
+        if (savedInstanceState == null) {
+            setupBottomNavigationBar()
+        }
     }
 
-    private fun setupNavigation() {
-        setSupportActionBar(toolbar)
-        navController = Navigation.findNavController(this@MainActivity, R.id.nav_host_fragment)
-        bottom_nav.setupWithNavController(navController)
-        NavigationUI.setupActionBarWithNavController(this@MainActivity, navController)
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        setupBottomNavigationBar()
+    }
 
-        navController.addOnDestinationChangedListener { _, destination, _ ->
+    private fun setupBottomNavigationBar(){
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav)
+
+        val navGraphIds = listOf(R.navigation.browse,R.navigation.favorite)
+
+        val controller = bottomNavigationView.setupWithNavController(
+            navGraphIds = navGraphIds,
+            fragmentManager = supportFragmentManager,
+            containerId = R.id.nav_host_fragment,
+            intent = intent
+        )
+
+        controller.value?.addOnDestinationChangedListener { _, destination, _ ->
             when(destination.id) {
                 R.id.browseFragment -> showBottomNav()
                 R.id.favoriteFragment -> showBottomNav()
                 R.id.descriptionFragment -> hideBottomNav()
             }
         }
+
+        currentNavController = controller
+    }
+
+    override fun onNavigateUp(): Boolean {
+        return currentNavController?.value?.navigateUp() ?: false
     }
 
     private fun hideBottomNav() {
