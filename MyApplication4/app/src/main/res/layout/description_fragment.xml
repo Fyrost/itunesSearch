@@ -28,7 +28,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:imageUrl="@{viewmodel.artworkUrl100}"
-                        android:scaleType="center"
+                        android:scaleType="fitXY"
                         android:adjustViewBounds="true"/>
                 <View
                         android:layout_width="wrap_content"
