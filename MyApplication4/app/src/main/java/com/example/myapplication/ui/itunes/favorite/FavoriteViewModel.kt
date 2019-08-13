@@ -34,7 +34,17 @@ class FavoriteViewModel(
 
     var isToggled: MutableLiveData<Boolean> = MutableLiveData(false)
 
-    var media: String = "movie"
+    var media: String = "feature-movie"
+
+    val displayMedia
+    get() = when (media) {
+        "feature-movie" -> "Movie"
+        "song" -> "Music"
+        "music-video" -> "Music Video"
+        else -> "Tv Show"
+    }
+
+
 
     var result: LiveData<List<ITunesResult>> = databaseRepository.results
     var dataChanged: LiveData<Boolean> = databaseRepository.dataChanged

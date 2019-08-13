@@ -109,7 +109,7 @@ class FavoriteFragment : ScopeFragment(), KodeinAware {
         }
 
         section.apply {
-            setHeader(RecyclerHeaderItem("No ${viewModel.media} in your favorites yet", items.isEmpty()))
+            setHeader(RecyclerHeaderItem("Browse through your Favorites using the Filter Button", items.isEmpty()))
             addAll(items)
         }
 
@@ -129,8 +129,11 @@ class FavoriteFragment : ScopeFragment(), KodeinAware {
     }
 
     private fun updateItems(items: List<RecyclerContentItem>) {
-        val message = if(items.isEmpty())  "No ${viewModel.media} in your favorites yet" else "Results for \"${viewModel.media}\""
-        section.setHeader(RecyclerHeaderItem(message,items.isEmpty()))
+        section.setHeader(RecyclerHeaderItem(displayMessage(items),items.isEmpty()))
         section.update(items)
+    }
+
+    private fun displayMessage(items: List<RecyclerContentItem>): String{
+        return if(items.isEmpty())  "No ${viewModel.displayMedia} in your favorites yet" else "Results for \"${viewModel.displayMedia}\""
     }
 }
