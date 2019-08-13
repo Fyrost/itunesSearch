@@ -1,14 +1,14 @@
 package com.example.myapplication.ui.utils
 
+
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import java.lang.Math.*
 
+
 class RecyclerItemDecoration(private val spanCount: Int, private val spacing: Int) : RecyclerView.ItemDecoration() {
-
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-
         val spacing = round(spacing * parent.context.resources.displayMetrics.density)
         val position = parent.getChildAdapterPosition(view)
         val column = position % spanCount

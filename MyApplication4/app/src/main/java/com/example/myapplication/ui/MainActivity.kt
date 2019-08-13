@@ -3,14 +3,18 @@ package com.example.myapplication.ui
 
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
+
 import androidx.navigation.NavController
 import androidx.navigation.ui.NavigationUI
+
 import com.example.myapplication.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
 import kotlinx.android.synthetic.main.activity_main.*
+
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 
