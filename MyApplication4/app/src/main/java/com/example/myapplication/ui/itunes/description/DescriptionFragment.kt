@@ -11,18 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 
-
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.databinding.DescriptionFragmentBinding
-import kotlinx.android.synthetic.main.description_fragment.*
 
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
-
-
-
-
 
 
 class DescriptionFragment : Fragment(), KodeinAware {

@@ -1,5 +1,6 @@
 package com.example.myapplication.ui
 
+
 import com.bumptech.glide.Glide
 
 import com.example.myapplication.R
@@ -12,6 +13,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 
 import kotlinx.android.synthetic.main.recycler_view_item.*
 import kotlinx.android.synthetic.main.recycler_view_item.view.*
+
 
 class RecyclerContentItem(
     val iTunesResult: ITunesResult

@@ -1,15 +1,17 @@
 package com.example.myapplication.ui
 
+
 import android.view.Gravity
 import android.view.ViewGroup.LayoutParams
+
 import com.example.myapplication.R
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+
 import kotlinx.android.synthetic.main.recycler_view_header.*
 
 
 class RecyclerHeaderItem(private val message: String,private val isRecyclerEmpty: Boolean): Item() {
-
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.apply {
             if(isRecyclerEmpty) {
@@ -33,5 +35,4 @@ class RecyclerHeaderItem(private val message: String,private val isRecyclerEmpty
     }
 
     override fun getLayout() = R.layout.recycler_view_header
-
 }

@@ -14,7 +14,6 @@ class DescriptionViewModelFactory(
     private val databaseRepository: DatabaseRepository,
     private val appContext: Context
 ): ViewModelProvider.NewInstanceFactory() {
-
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return DescriptionViewModel(databaseRepository, appContext) as T
     }

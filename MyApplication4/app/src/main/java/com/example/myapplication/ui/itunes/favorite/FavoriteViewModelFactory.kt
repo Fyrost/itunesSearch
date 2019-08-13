@@ -11,7 +11,6 @@ import com.example.myapplication.data.repository.DatabaseRepository
 class FavoriteViewModelFactory(
     private val databaseRepository: DatabaseRepository
 ): ViewModelProvider.NewInstanceFactory() {
-
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return FavoriteViewModel(databaseRepository) as T
     }

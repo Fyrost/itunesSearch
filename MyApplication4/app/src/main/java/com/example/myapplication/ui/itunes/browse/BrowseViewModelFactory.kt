@@ -11,7 +11,6 @@ import com.example.myapplication.data.repository.ITunesRepository
 class BrowseViewModelFactory(
     private val iTunesRepository: ITunesRepository
 ):ViewModelProvider.NewInstanceFactory() {
-
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return BrowseViewModel(iTunesRepository) as T
     }
