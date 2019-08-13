@@ -99,6 +99,7 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
             if (noInternet) {
                 displayNoInternet()
             }
+            viewModel.setNotInProgress()
         })
 
         fabFilterAnimation(fab_filter_menu_browse)

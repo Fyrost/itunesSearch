@@ -45,13 +45,15 @@ class FavoriteViewModel(
         else -> "Tv Show"
     }
 
-
-
     var result: LiveData<List<ITunesResult>> = databaseRepository.results
     var dataChanged: LiveData<Boolean> = databaseRepository.dataChanged
 
     var lastTerm: String? = ""
     var lastMedia: String? = ""
+
+    init {
+        databaseRepository.getAll()
+    }
 
     fun fetchFavorites() {
         if (dataChanged.value!! || (lastTerm != term.value || media != lastMedia)) {
@@ -70,5 +72,13 @@ class FavoriteViewModel(
         media = v.tag.toString()
         fetchFavorites()
         v.hideKeyboard()
+    }
+
+    private fun setInProgress() {
+        inProgress.postValue(View.VISIBLE)
+    }
+
+    fun setNotInProgress() {
+        inProgress.postValue(View.GONE)
     }
 }

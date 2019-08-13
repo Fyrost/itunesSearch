@@ -91,6 +91,7 @@ class FavoriteFragment : ScopeFragment(), KodeinAware {
             if (fab_filter_menu_favorite.isOpened) {
                 fab_filter_menu_favorite.toggle(true)
             }
+            viewModel.setNotInProgress()
         })
 
         fabFilterAnimation(fab_filter_menu_favorite)
