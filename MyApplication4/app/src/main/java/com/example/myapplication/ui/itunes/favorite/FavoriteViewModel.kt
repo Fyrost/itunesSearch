@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModel
 
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.data.repository.DatabaseRepository
+import com.example.myapplication.ui.utils.hideKeyboard
 
 
 class FavoriteViewModel(
@@ -68,5 +69,6 @@ class FavoriteViewModel(
         isToggled.postValue(false)
         media = v.tag.toString()
         fetchFavorites()
+        v.hideKeyboard()
     }
 }

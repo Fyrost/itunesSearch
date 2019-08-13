@@ -129,11 +129,15 @@ class FavoriteFragment : ScopeFragment(), KodeinAware {
     }
 
     private fun updateItems(items: List<RecyclerContentItem>) {
-        section.setHeader(RecyclerHeaderItem(displayMessage(items),items.isEmpty()))
+        section.setHeader(RecyclerHeaderItem(displayMessage(items,viewModel.lastTerm),items.isEmpty()))
         section.update(items)
     }
 
-    private fun displayMessage(items: List<RecyclerContentItem>): String{
-        return if(items.isEmpty())  "No ${viewModel.displayMedia} in your favorites yet" else "Results for \"${viewModel.displayMedia}\""
+    private fun displayMessage(items: List<RecyclerContentItem>,term:String?): String{
+        return when {
+            items.isEmpty() -> "No ${viewModel.displayMedia} in your favorites yet"
+            term.isNullOrBlank() -> viewModel.displayMedia
+            else -> "${viewModel.displayMedia} Results for \"$term\""
+        }
     }
 }

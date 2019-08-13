@@ -1,10 +1,12 @@
 package com.example.myapplication.ui.itunes.browse
 
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 
 import androidx.lifecycle.ViewModelProviders
 import androidx.databinding.DataBindingUtil
@@ -62,7 +64,9 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        editText_search.setOnFocusChangeListener { view, b ->
 
+        }
         bindUI()
     }
 
@@ -91,6 +95,7 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
         viewModel.isToggled.observe(this@BrowseFragment, Observer {
             if (fab_filter_menu_browse.isOpened) {
                 fab_filter_menu_browse.toggle(true)
+
             }
         })
 

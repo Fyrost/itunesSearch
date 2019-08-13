@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.data.repository.ITunesRepository
+import com.example.myapplication.ui.utils.hideKeyboard
 
 
 class BrowseViewModel(
@@ -66,6 +67,7 @@ class BrowseViewModel(
         media = v.tag.toString()
         isToggled.postValue(false)
         fetchResult()
+        v.hideKeyboard()
     }
 }
 
