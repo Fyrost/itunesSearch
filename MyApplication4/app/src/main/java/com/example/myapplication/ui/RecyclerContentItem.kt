@@ -1,5 +1,7 @@
 package com.example.myapplication.ui
 
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+
 import com.bumptech.glide.Glide
 
 import com.example.myapplication.R
@@ -13,6 +15,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.recycler_view_item.*
 import kotlinx.android.synthetic.main.recycler_view_item.view.*
 
+
 class RecyclerContentItem(
     val iTunesResult: ITunesResult
 ): Item() {
@@ -21,8 +24,15 @@ class RecyclerContentItem(
             textView_title.text = iTunesResult.trackName
             textView_genre.text = iTunesResult.primaryGenreName
             textView_price.text = iTunesResult.trackPrice.priceFormat()
+
+            val circularProgressDrawable = CircularProgressDrawable(itemView.context)
+            circularProgressDrawable.strokeWidth = 5f
+            circularProgressDrawable.centerRadius = 30f
+            circularProgressDrawable.start()
+
             Glide.with(itemView.context)
                 .load(iTunesResult.artworkUrl100.largerImage(130))
+                .placeholder(circularProgressDrawable)
                 .into(itemView.imageView_Art)
         }
     }
