@@ -64,9 +64,7 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        editText_search.setOnFocusChangeListener { view, b ->
 
-        }
         bindUI()
     }
 
