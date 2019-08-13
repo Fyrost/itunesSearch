@@ -2,10 +2,7 @@ package com.example.myapplication.ui.itunes.browse
 
 
 import android.view.View
-
-import androidx.databinding.Bindable
-import androidx.databinding.Observable
-import androidx.databinding.PropertyChangeRegistry
+import androidx.databinding.*
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,6 +10,7 @@ import androidx.lifecycle.ViewModel
 
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.data.repository.ITunesRepository
+import com.example.myapplication.ui.utils.hideKeyboard
 
 
 class BrowseViewModel(
@@ -30,41 +28,47 @@ class BrowseViewModel(
     var term = MutableLiveData<String>()
 
     @Bindable
-    var inProgress = MutableLiveData<Int>()
+    val inProgress: MutableLiveData<Boolean> = MutableLiveData()
+    val isInProgress: LiveData<Boolean> = iTunesRepository.inProgress
+
+    val noInternet: LiveData<Boolean> = iTunesRepository.noInternet
+
+    private var media: String = "movie"
+
+    val result: LiveData<List<ITunesResult>> = iTunesRepository.downloadedITunesResult
+
+    var lastTerm: String? = ""
+    var lastMedia: String? = ""
+    var isToggled: MutableLiveData<Boolean> = MutableLiveData(true)
 
     init {
-        inProgress.value = View.VISIBLE
+        inProgress.postValue(false)
     }
-
-    private var media: String = "music"
-
-    var result: LiveData<List<ITunesResult>> = iTunesRepository.getResults(term.value.toString(), media)
 
     fun fetchResult() {
-        setInProgress()
-        result = iTunesRepository.getResults(term.value.toString(), media)
+        var searchTerm: String? = term.value
+        if (lastTerm != searchTerm || lastMedia != media) {
+            if (!searchTerm.isNullOrBlank()) {
+                iTunesRepository.getResults(searchTerm, media)
+            }
+            lastTerm = searchTerm
+            lastMedia = media
+        }
     }
+
+    val displayMedia
+        get() = when (media) {
+            "tvShow" -> "Tv Show"
+            "musicVideo" -> "Music Video"
+            else -> media.capitalize()
+        }
 
     fun onclick(v: View) {
         media = v.tag.toString()
+        isToggled.postValue(false)
         fetchResult()
-    }
-
-    private fun setInProgress() {
-        inProgress.postValue(View.VISIBLE)
-    }
-
-    fun setNotInProgress() {
-        inProgress.postValue(View.GONE)
-    }
-
-    fun removeNull(iTunesResult: List<ITunesResult>): List<ITunesResult> {
-        var tempResult: MutableList<ITunesResult> = mutableListOf()
-        for (row in iTunesResult) {
-            if (!row.trackName.isNullOrBlank() || row.trackId != 0) {
-                tempResult.add(row)
-            }
-        }
-        return tempResult.toList()
+        v.hideKeyboard()
     }
 }
+
+

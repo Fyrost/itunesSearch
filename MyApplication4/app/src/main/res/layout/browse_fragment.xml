@@ -5,6 +5,7 @@
         xmlns:fab="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="android.view.View"/>
         <variable
                 name="viewmodel"
                 type="com.example.myapplication.ui.itunes.browse.BrowseViewModel"/>
@@ -16,12 +17,15 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/colorOffset"
                 android:orientation="vertical">
             <FrameLayout
                     android:theme="@style/AppTheme"
                     android:background="?colorPrimary"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:focusableInTouchMode="true"
+                    android:elevation="4dp">
                 <EditText
                         android:hint="Search"
                         android:background="@drawable/shape_rounded_text_edit"
@@ -29,9 +33,14 @@
                         android:layout_height="36dp"
                         android:layout_margin="24dp"
                         android:paddingHorizontal="12dp"
+                        android:textCursorDrawable="@drawable/shape_edit_text_cursor"
+                        android:textColorHint="@color/colorPrimaryLight"
+                        android:textColor="@color/colorText"
                         android:textSize="19sp"
                         android:inputType="textPersonName"
+                        android:letterSpacing="0.1"
                         android:ems="10"
+                        android:imeOptions="actionDone"
                         android:text="@={viewmodel.term}"
                         android:drawableEnd="@drawable/ic_tab_browse"
                         android:id="@+id/editText_search"/>
@@ -44,12 +53,13 @@
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/browse_recyclerView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:paddingHorizontal="4dp"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:visibility="@{safeUnbox(viewmodel.inProgress)}"
+                        android:visibility="@{viewmodel.inProgress ? View.VISIBLE : View.GONE}"
                         android:background="@color/transparentPrimaryLight">
                     <androidx.constraintlayout.widget.Group
                             android:id="@+id/group_loading"
@@ -72,7 +82,6 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
-
                     <TextView
                             android:id="@+id/textView_loading"
                             android:layout_width="wrap_content"
@@ -101,8 +110,7 @@
                 android:paddingLeft="10dp"
                 app:menu_icon="@drawable/ic_fab_filter_list"
                 app:menu_labels_ellipsize="end"
-                app:menu_labels_singleLine="true"
-                app:menu_backgroundColor="#ccffffff">
+                app:menu_labels_singleLine="true">
 
             <com.github.clans.fab.FloatingActionButton
                     android:layout_width="wrap_content"

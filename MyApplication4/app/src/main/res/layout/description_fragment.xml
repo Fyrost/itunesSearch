@@ -1,25 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<layout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.itunes.description.DescriptionFragment">
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.example.myapplication.ui.itunes.description.DescriptionViewModel"/>
+        <variable
+                name="viewmodel"
+                type="com.example.myapplication.ui.itunes.description.DescriptionViewModel"/>
+    </data>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorOffset"
+            tools:context=".ui.itunes.description.DescriptionFragment">
 
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView_description_title"
-            android:text="Hello"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="28dp" android:layout_marginStart="44dp"/>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:src="@drawable/ic_favorite_black_24dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true" android:id="@+id/fab" android:layout_marginEnd="40dp"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="28dp"/>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.coordinatorlayout.widget.CoordinatorLayout android:id="@+id/header"
+                    android:layout_width="match_parent"
+                    android:layout_height="360dp">
+                <ImageView
+                        android:id="@+id/imageView_Art_Description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:imageUrl="@{viewmodel.artworkUrl100}"
+                        android:scaleType="fitXY"
+                        android:adjustViewBounds="true"/>
+                <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_image_foreground_gradient"/>
+                <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_close_bg"
+                        android:id="@+id/close_button_description"
+                        android:background="@null"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:onClick="@{viewmodel::oncloseclick}"
+                        app:layout_anchorGravity="end|top"
+                        app:layout_anchor="@+id/imageView_Art_Description"/>
+                <TextView
+                        android:id="@+id/textView_description_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:shadowColor="#69000000"
+                        android:shadowDy="10"
+                        android:shadowRadius="1"
+                        android:textSize="32sp"
+                        android:lineSpacingExtra="8sp"
+                        android:textColor="@color/colorText"
+                        android:layout_marginBottom="40dp"
+                        android:text="@{viewmodel.trackName}"
+                        android:textAlignment="center"
+                        tools:text="Blade Runner: 2049"
+                        app:layout_anchorGravity="bottom|center"
+                        app:layout_anchor="@+id/imageView_Art_Description"/>
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+               <include
+                       layout="@layout/description_content"
+                       app:viewmodel="@{((DescriptionViewModel) viewmodel)}"
+               />
+
+            </ScrollView>
+
+        </LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:src="@{viewmodel.isDuplicate ? @drawable/ic_favorite_border : @drawable/ic_tab_favorite}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimaryLight"
+                app:borderWidth="0dp"
+                android:elevation="1dp"
+                android:layout_marginEnd="40dp"
+                android:onClick="@{viewmodel::onFavoriteClick}"
+                app:layout_anchorGravity="end|bottom"
+                app:layout_anchor="@id/header"
+                />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

@@ -11,6 +11,10 @@ import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.data.db.network.response.ITunesResponse
 import com.example.myapplication.internal.NoConnectivityException
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,19 +25,37 @@ class ITunesRepositoryImpl(
 ) : ITunesRepository {
     override val downloadedITunesResult: MutableLiveData<List<ITunesResult>> = MutableLiveData()
 
-    override fun getResults(term: String, media: String): LiveData<List<ITunesResult>> {
-        try {
-            val call = iTunesApiService.getResults(term, media)
-            call.enqueue(object: Callback<ITunesResponse> {
-                override fun onFailure(call: Call<ITunesResponse>, t: Throwable) {
-                    Log.e("Connectivity", "No Internet Connection")
-                }
-                override fun onResponse(call: Call<ITunesResponse>, response: Response<ITunesResponse>) {
-                    downloadedITunesResult.postValue(response.body()!!.iTunesResult)
-                }
-            })
-        } catch (e: NoConnectivityException) {
-            Log.e("Connectivity", "No Internet Connection")
+    private val _noInternet = MutableLiveData(false)
+    override val noInternet: LiveData<Boolean>
+        get() = _noInternet
+
+    private val _inProgress = MutableLiveData<Boolean>()
+    override val inProgress: LiveData<Boolean>
+        get() = _inProgress
+
+    override fun getResults(term: String?, media: String): LiveData<List<ITunesResult>> {
+        _inProgress.postValue(true)
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val call = iTunesApiService.getResults(term, media)
+                call.enqueue(object : Callback<ITunesResponse> {
+                    override fun onFailure(call: Call<ITunesResponse>, t: Throwable) {
+                        Log.e("Connectivity", "No Internet Connection")
+                        _inProgress.postValue(false)
+                        _noInternet.postValue(true)
+                    }
+
+                    override fun onResponse(call: Call<ITunesResponse>, response: Response<ITunesResponse>) {
+                        downloadedITunesResult.postValue(response.body()!!.iTunesResult)
+                        _inProgress.postValue(false)
+                        _noInternet.postValue(false)
+                    }
+                })
+            } catch (e: NoConnectivityException) {
+                Log.e("Connectivity", "No Internet Connection")
+                _inProgress.postValue(false)
+                _noInternet.postValue(true)
+            }
         }
         return downloadedITunesResult
     }

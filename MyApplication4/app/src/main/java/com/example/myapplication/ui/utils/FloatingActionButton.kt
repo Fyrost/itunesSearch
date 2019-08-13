@@ -5,7 +5,10 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Context
+import android.view.View
 import android.view.animation.OvershootInterpolator
+import android.view.inputmethod.InputMethodManager
 
 import com.example.myapplication.R
 
@@ -29,7 +32,7 @@ fun fabFilterAnimation(fab: FloatingActionMenu) {
 
     scaleInX.addListener(object : AnimatorListenerAdapter() {
         override fun onAnimationStart(animation: Animator?) {
-            fab.menuIconView.setImageResource(if (!fab.isOpened) R.drawable.ic_fab_filter_close else R.drawable.ic_fab_filter_list)
+            fab.menuIconView.setImageResource(if (!fab.isOpened) R.drawable.ic_close else R.drawable.ic_fab_filter_list)
         }
     })
 
@@ -39,4 +42,9 @@ fun fabFilterAnimation(fab: FloatingActionMenu) {
 
     fab.iconToggleAnimatorSet = set
     fab.setClosedOnTouchOutside(true)
+}
+
+fun View.hideKeyboard() {
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(windowToken, 0)
 }

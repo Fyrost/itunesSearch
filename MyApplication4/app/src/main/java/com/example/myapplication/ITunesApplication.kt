@@ -37,7 +37,7 @@ class ITunesApplication : Application(), KodeinAware {
         bind<ITunesRepository>() with singleton { ITunesRepositoryImpl(instance()) }
         bind() from provider { BrowseViewModelFactory(instance()) }
         bind<DatabaseRepository>() with singleton { DatabaseRepositoryImpl(instance()) }
-        bind() from provider { DescriptionViewModelFactory(instance()) }
+        bind() from provider { DescriptionViewModelFactory(instance(),instance()) }
         bind() from provider { FavoriteViewModelFactory(instance()) }
     }
 

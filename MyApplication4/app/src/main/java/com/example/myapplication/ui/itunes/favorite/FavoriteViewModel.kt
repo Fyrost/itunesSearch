@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModel
 
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.data.repository.DatabaseRepository
+import com.example.myapplication.ui.utils.hideKeyboard
 
 
 class FavoriteViewModel(
@@ -32,26 +33,45 @@ class FavoriteViewModel(
     @Bindable
     var inProgress = MutableLiveData<Int>()
 
-    var media: String = "movie"
+    var isToggled: MutableLiveData<Boolean> = MutableLiveData(false)
+
+    var media: String = "feature-movie"
+
+    val displayMedia
+    get() = when (media) {
+        "feature-movie" -> "Movie"
+        "song" -> "Music"
+        "music-video" -> "Music Video"
+        else -> "Tv Show"
+    }
 
     var result: LiveData<List<ITunesResult>> = databaseRepository.results
+    var dataChanged: LiveData<Boolean> = databaseRepository.dataChanged
+
+    var lastTerm: String? = ""
+    var lastMedia: String? = ""
 
     init {
         databaseRepository.getAll()
     }
 
     fun fetchFavorites() {
-        setInProgress()
-        if (term.value.isNullOrBlank()) {
-            databaseRepository.getMediaResult(media)
-        } else {
-            databaseRepository.getMediaTermResult(term.value.toString(), media)
+        if (dataChanged.value!! || (lastTerm != term.value || media != lastMedia)) {
+            if (term.value.isNullOrBlank()) {
+                databaseRepository.getMediaResult(media)
+            } else {
+                databaseRepository.getMediaTermResult(term.value.toString(), media)
+            }
+            lastTerm = term.value
+            lastMedia = media
         }
     }
 
     fun onclick(v: View) {
+        isToggled.postValue(false)
         media = v.tag.toString()
         fetchFavorites()
+        v.hideKeyboard()
     }
 
     private fun setInProgress() {
