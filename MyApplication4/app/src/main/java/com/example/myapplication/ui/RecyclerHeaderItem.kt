@@ -11,7 +11,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.recycler_view_header.*
 
 
-class RecyclerHeaderItem(private val message: String,private val isRecyclerEmpty: Boolean): Item() {
+class RecyclerHeaderItem(private val message: String, private val isRecyclerEmpty: Boolean): Item() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.apply {
             if(isRecyclerEmpty) {

@@ -25,6 +25,10 @@ class ITunesRepositoryImpl(
 ) : ITunesRepository {
     override val downloadedITunesResult: MutableLiveData<List<ITunesResult>> = MutableLiveData()
 
+    private val _noInternet = MutableLiveData(false)
+    override val noInternet: LiveData<Boolean>
+        get() = _noInternet
+
     private val _inProgress = MutableLiveData<Boolean>()
     override val inProgress: LiveData<Boolean>
         get() = _inProgress
@@ -38,16 +42,19 @@ class ITunesRepositoryImpl(
                     override fun onFailure(call: Call<ITunesResponse>, t: Throwable) {
                         Log.e("Connectivity", "No Internet Connection")
                         _inProgress.postValue(false)
+                        _noInternet.postValue(true)
                     }
 
                     override fun onResponse(call: Call<ITunesResponse>, response: Response<ITunesResponse>) {
                         downloadedITunesResult.postValue(response.body()!!.iTunesResult)
                         _inProgress.postValue(false)
+                        _noInternet.postValue(false)
                     }
                 })
             } catch (e: NoConnectivityException) {
                 Log.e("Connectivity", "No Internet Connection")
-                _inProgress.postValue(true)
+                _inProgress.postValue(false)
+                _noInternet.postValue(true)
             }
         }
         return downloadedITunesResult
