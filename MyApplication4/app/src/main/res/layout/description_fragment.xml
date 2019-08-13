@@ -37,12 +37,11 @@
                 <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_close"
+                        android:src="@drawable/ic_close_bg"
                         android:id="@+id/close_button_description"
                         android:background="@null"
                         android:layout_marginTop="12dp"
                         android:layout_marginEnd="12dp"
-                        android:padding="12dp"
                         android:onClick="@{viewmodel::oncloseclick}"
                         app:layout_anchorGravity="end|top"
                         app:layout_anchor="@+id/imageView_Art_Description"/>
