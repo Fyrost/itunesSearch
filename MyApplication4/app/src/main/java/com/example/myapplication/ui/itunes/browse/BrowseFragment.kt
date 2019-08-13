@@ -147,6 +147,7 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
     }
 
     private fun displayMessage(items: List<RecyclerContentItem>): String{
-        return if(items.isEmpty())  "Sorry, we couldn't find any ${viewModel.displayMedia} for \"${viewModel.lastTerm}\"" else "Results for \"${viewModel.lastTerm}\" in ${viewModel.displayMedia}"
+        return if(items.isEmpty())  "Sorry, we couldn't find any ${viewModel.displayMedia} for \"${viewModel.lastTerm}\""
+        else "${viewModel.displayMedia} search results for \"${viewModel.lastTerm}\""
     }
 }
