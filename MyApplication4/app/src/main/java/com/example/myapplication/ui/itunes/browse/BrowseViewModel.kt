@@ -31,6 +31,12 @@ class BrowseViewModel(
     val isInProgress: LiveData<Boolean> = iTunesRepository.inProgress
 
     private var media: String = "movie"
+    val displayMedia
+        get() = when (media) {
+            "tvShow" -> "Tv Show"
+            "musicVideo" -> "Music Video"
+            else -> media.capitalize()
+        }
 
     val result: LiveData<List<ITunesResult>> = iTunesRepository.downloadedITunesResult
 
