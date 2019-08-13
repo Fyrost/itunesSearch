@@ -55,6 +55,13 @@ class BrowseViewModel(
         }
     }
 
+    val displayMedia
+        get() = when (media) {
+            "tvShow" -> "Tv Show"
+            "musicVideo" -> "Music Video"
+            else -> media.capitalize()
+        }
+
     fun onclick(v: View) {
         media = v.tag.toString()
         isToggled.postValue(false)

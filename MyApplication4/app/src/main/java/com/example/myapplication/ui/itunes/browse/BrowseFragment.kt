@@ -131,13 +131,7 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
     }
 
     private fun updateItems(items: List<RecyclerContentItem>) {
-        var message = "Results for \"${viewModel.lastTerm}\""
-        when {
-            items.isEmpty() -> {
-                message = "Sorry, we couldn't find any media for \"${viewModel.lastTerm}\""
-            }
-        }
-        section.setHeader(RecyclerHeaderItem(message,items.isEmpty()))
+        section.setHeader(RecyclerHeaderItem(displayMessage(items),items.isEmpty()))
         section.update(items)
     }
 
@@ -150,5 +144,9 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
     private fun navigateToDescription(iTunesResult: ITunesResult, view: View) {
         val actionDetail = BrowseFragmentDirections.actionDetail1(iTunesResult)
         Navigation.findNavController(view).navigate(actionDetail)
+    }
+
+    private fun displayMessage(items: List<RecyclerContentItem>): String{
+        return if(items.isEmpty())  "Sorry, we couldn't find any ${viewModel.displayMedia} for \"${viewModel.lastTerm}\"" else "Results for \"${viewModel.lastTerm}\" in ${viewModel.displayMedia}"
     }
 }
