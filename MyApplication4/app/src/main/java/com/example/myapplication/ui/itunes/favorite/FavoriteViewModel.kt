@@ -44,6 +44,8 @@ class FavoriteViewModel(
         else -> "Tv Show"
     }
 
+
+
     var result: LiveData<List<ITunesResult>> = databaseRepository.results
     var dataChanged: LiveData<Boolean> = databaseRepository.dataChanged
 

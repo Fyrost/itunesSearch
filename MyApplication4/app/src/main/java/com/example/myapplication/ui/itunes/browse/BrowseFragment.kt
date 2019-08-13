@@ -36,7 +36,6 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
-
 class BrowseFragment : ScopeFragment(), KodeinAware {
     override val kodein by closestKodein()
     private val viewModelFactory: BrowseViewModelFactory by instance()

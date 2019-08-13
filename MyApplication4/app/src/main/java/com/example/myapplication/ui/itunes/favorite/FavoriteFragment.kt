@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -33,7 +34,6 @@ import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
-
 
 class FavoriteFragment : ScopeFragment(), KodeinAware {
     override val kodein by closestKodein()
