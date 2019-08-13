@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.databinding.BrowseFragmentBinding
+
 import com.example.myapplication.ui.RecyclerContentItem
 import com.example.myapplication.ui.RecyclerHeaderItem
 import com.example.myapplication.ui.base.ScopeFragment
