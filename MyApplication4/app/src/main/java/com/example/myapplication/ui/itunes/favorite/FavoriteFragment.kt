@@ -135,7 +135,8 @@ class FavoriteFragment : ScopeFragment(), KodeinAware {
 
     private fun displayMessage(items: List<RecyclerContentItem>,term:String?): String{
         return when {
-            items.isEmpty() -> "No ${viewModel.displayMedia} in your favorites yet"
+            items.isEmpty() && !term.isNullOrEmpty() -> "No $term in your ${viewModel.displayMedia} favorites"
+            items.isEmpty() && term.isNullOrEmpty() -> "No ${viewModel.displayMedia} in your favorites yet"
             term.isNullOrBlank() -> viewModel.displayMedia
             else -> "${viewModel.displayMedia} Results for \"$term\""
         }
