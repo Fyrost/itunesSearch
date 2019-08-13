@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.data.db.entity.ITunesResult
 import com.example.myapplication.databinding.BrowseFragmentBinding
+
 import com.example.myapplication.ui.RecyclerContentItem
 import com.example.myapplication.ui.RecyclerHeaderItem
 import com.example.myapplication.ui.base.ScopeFragment
@@ -93,6 +94,12 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
             }
         })
 
+        viewModel.noInternet.observe(this@BrowseFragment, Observer { noInternet ->
+            if (noInternet) {
+                displayNoInternet()
+            }
+        })
+
         fabFilterAnimation(fab_filter_menu_browse)
     }
 
@@ -124,9 +131,20 @@ class BrowseFragment : ScopeFragment(), KodeinAware {
     }
 
     private fun updateItems(items: List<RecyclerContentItem>) {
-        val message = if(items.isEmpty())  "Sorry, we couldn't find any media for \"${viewModel.lastTerm}\"" else "Results for \"${viewModel.lastTerm}\""
+        var message = "Results for \"${viewModel.lastTerm}\""
+        when {
+            items.isEmpty() -> {
+                message = "Sorry, we couldn't find any media for \"${viewModel.lastTerm}\""
+            }
+        }
         section.setHeader(RecyclerHeaderItem(message,items.isEmpty()))
         section.update(items)
+    }
+
+    private fun displayNoInternet() {
+        val message = "No internet connection, Please connect your mobile device to WiFi or Data."
+        section.setHeader(RecyclerHeaderItem(message, true))
+        section.update(listOf())
     }
 
     private fun navigateToDescription(iTunesResult: ITunesResult, view: View) {

@@ -30,6 +30,8 @@ class BrowseViewModel(
     val inProgress: MutableLiveData<Boolean> = MutableLiveData()
     val isInProgress: LiveData<Boolean> = iTunesRepository.inProgress
 
+    val noInternet: LiveData<Boolean> = iTunesRepository.noInternet
+
     private var media: String = "movie"
 
     val result: LiveData<List<ITunesResult>> = iTunesRepository.downloadedITunesResult
